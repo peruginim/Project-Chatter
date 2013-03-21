@@ -2,6 +2,7 @@ package com.example.projectchatter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 
@@ -20,7 +21,7 @@ public class RecordVoice extends Activity {
 	
 	
     public void buttonHandler(View v) { 
-        System.out.println("Button Clicked"); 
+    	//Log.d("sys out", "hello world"); 
 
     }
     

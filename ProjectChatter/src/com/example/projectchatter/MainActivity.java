@@ -1,9 +1,9 @@
 package com.example.projectchatter;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +18,10 @@ public class MainActivity extends Activity implements OnClickListener {
         //setup Record button that goes to the record xml
         View record = findViewById(R.id.button_record);
         record.setOnClickListener(this);
+        
+        //setup Settings button that goes to the setting xml
+        View settings = findViewById(R.id.button_settings);
+        settings.setOnClickListener(this);
 	}
 
 	@Override
@@ -32,9 +36,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
     	switch(v.getId()){
 			case R.id.button_record:
-				Intent i1 = new Intent(this, RecordVoice.class);
-				startActivity(i1);
+				Log.d("btn event", "record button pressed");
 				break;
+					
+    		case R.id.button_settings:
+    			Log.d("btn event", "settings button pressed");
+    			Intent i2 = new Intent(this, Settings.class);
+    			startActivity(i2);
+    			break;
     		}
 	}
 	
