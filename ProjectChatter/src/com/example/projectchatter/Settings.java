@@ -15,12 +15,22 @@ public class Settings extends Activity implements OnClickListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// show the 'Settings' screen
 		setContentView(content);
+		
+		// set up click listener for the save button
 		View save = findViewById(R.id.button_Save);
 		save.setOnClickListener(this);
-		SharedPreferences pref = getSharedPreferences("voipPreferences", Context.MODE_PRIVATE);
+		
+		// save persistent application data in SharedPreferences structure
+		SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+		
+		// create edit-able text fields
 		EditText directory = (EditText) findViewById(R.id.editDirectory);
 		EditText port = (EditText) findViewById(R.id.editPort);
+		
+		// set text of the text fields
 		directory.setText(pref.getString("Directory", "lore.cs.purdue.edu"));
 		port.setText(pref.getString("Port", "3459"));
 	}
@@ -29,16 +39,22 @@ public class Settings extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.button_Save:
-			EditText directory = (EditText) findViewById(R.id.editDirectory);
-			EditText port = (EditText) findViewById(R.id.editPort);
-			SharedPreferences pref = getSharedPreferences("voipPreferences",Context.MODE_PRIVATE);
-			if(directory.getText().toString().length() != 0) pref.edit().putString("Directory", directory.getText().toString()).commit();
-			if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
-			Intent i = 	new Intent(this, MainActivity.class);
-			startActivity(i);
-			break;
-		}
+			case R.id.button_Save:
+				
+				// create edit-able text fields
+				EditText directory = (EditText) findViewById(R.id.editDirectory);
+				EditText port = (EditText) findViewById(R.id.editPort);
+			
+				// save the strings from the text fields
+				SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+				if(directory.getText().toString().length() != 0) pref.edit().putString("Directory", directory.getText().toString()).commit();
+				if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
+			
+				// show the 'MainActivity' screen again
+				Intent i = 	new Intent(this, MainActivity.class);
+				startActivity(i);
+				break;
+			}
 	}
 	
 

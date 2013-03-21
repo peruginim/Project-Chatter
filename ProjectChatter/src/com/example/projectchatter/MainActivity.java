@@ -33,14 +33,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		
+		// determine which button is pressed
     	switch(v.getId()){
+    	
+    		// if record button pressed, add functionality...  
 			case R.id.button_record:
+				// print to logcat
 				Log.d("btn event", "record button pressed");
 				break;
-					
+			
+			// if settings button pressed, open settings screen
     		case R.id.button_settings:
-    			Log.d("btn event", "settings button pressed");
     			Intent i2 = new Intent(this, Settings.class);
     			startActivity(i2);
     			break;

@@ -6,6 +6,16 @@ import android.util.Log;
 import android.view.View;
 
 
+/* 
+ * 1. collect voice data
+ * 2. verify voice data with user
+ * 3. connect with server
+ * 4. send voice data to server
+ * 
+ * to do this we may need a new screen or at least more buttons on the home screen
+ * 
+ */
+
 public class RecordVoice extends Activity {
 
 	int content = R.layout.activity_main;
@@ -17,12 +27,6 @@ public class RecordVoice extends Activity {
         setContentView(content);
 
     }
-	
-	
-	
-    public void buttonHandler(View v) { 
-    	//Log.d("sys out", "hello world"); 
 
-    }
     
 }
