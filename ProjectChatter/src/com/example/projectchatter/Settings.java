@@ -43,7 +43,6 @@ public class Settings extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.button_Save:
-				
 				// create edit-able text fields
 				EditText directory = (EditText) findViewById(R.id.editDirectory);
 				EditText port = (EditText) findViewById(R.id.editPort);
@@ -58,6 +57,7 @@ public class Settings extends Activity implements OnClickListener {
 				startActivity(i);
 				break;
 			case R.id.button_back:
+				// send user back to home screen, don't save input
 				Intent j = new Intent(this, MainActivity.class);
 				startActivity(j);
 				break;
