@@ -12,7 +12,7 @@ public class ChatterServerMain {
 		    System.exit(1);
 		}
 		while(listening)
-		new chatterServer(serverSocket.accept()).start();
+		new ChatterServer(serverSocket.accept()).start();
        serverSocket.close();
 	}
 }
