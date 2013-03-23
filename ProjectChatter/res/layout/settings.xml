@@ -51,4 +51,10 @@
         android:layout_height="wrap_content"
         android:text="Save" />
 
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back without Saving" />
+
 </LinearLayout>

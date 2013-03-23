@@ -23,6 +23,9 @@ public class Settings extends Activity implements OnClickListener {
 		View save = findViewById(R.id.button_Save);
 		save.setOnClickListener(this);
 		
+		View back = findViewById(R.id.button_back);
+		back.setOnClickListener(this);
+		
 		// save persistent application data in SharedPreferences structure
 		SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
 		
@@ -54,8 +57,11 @@ public class Settings extends Activity implements OnClickListener {
 				Intent i = 	new Intent(this, MainActivity.class);
 				startActivity(i);
 				break;
+			case R.id.button_back:
+				Intent j = new Intent(this, MainActivity.class);
+				startActivity(j);
+				break;
 			}
-	}
-	
+	}	
 
 }
