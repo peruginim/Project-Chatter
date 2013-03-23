@@ -14,5 +14,9 @@ CLASSES = \
 all: $(CLASSES)
 	$(JC) $(JFLAGS) *.java
 
+keygen: ChatterRSA.java
+	$(JC) $(JFLAGS) ChatterRSA.java
+	java ChatterRSA
+	rm -r ChatterRSA.class
 clean:
 	$(RM) *.class
