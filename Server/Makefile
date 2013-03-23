@@ -7,7 +7,6 @@ JC = javac
 
 CLASSES = \
 	ChatterServer.java \
-	ChatterClient.java \
 	ChatterProtocol.java \
 	ChatterServerMain.java
 
