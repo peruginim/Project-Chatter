@@ -8,15 +8,14 @@ JC = javac
 CLASSES = \
 	ChatterServer.java \
 	ChatterProtocol.java \
+	ChatterRSA.java \
 	ChatterServerMain.java
 
 #Create .class files from .java files
 all: $(CLASSES)
 	$(JC) $(JFLAGS) *.java
 
-keygen: ChatterRSA.java
-	$(JC) $(JFLAGS) ChatterRSA.java
+keygen: ChatterRSA.class
 	java ChatterRSA
-	rm -r ChatterRSA.class
 clean:
 	$(RM) *.class

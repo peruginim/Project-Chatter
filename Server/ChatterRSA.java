@@ -2,6 +2,7 @@ import java.math.BigInteger;
 import java.io.*;
 import java.security.*;
 import java.security.spec.*;
+import javax.crypto.*;
 
 public class ChatterRSA {
 	KeyPair kp;
@@ -17,6 +18,9 @@ public class ChatterRSA {
 	}
 
 
+	/*
+	 * This method is to generate the RSA keys
+	 */
 	public void keyGen() throws Exception{
 		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
 		kpg.initialize(2048);
@@ -35,6 +39,9 @@ public class ChatterRSA {
 		saveToFile(".private.key", priv.getModulus(),
 				priv.getPrivateExponent());
 	}	
+	/*
+	 *  Saves the Generated RSA keys to .hidden files
+	 */
 	public void saveToFile(String fileName, BigInteger mod, BigInteger exp) throws IOException {
 		ObjectOutputStream oout = new ObjectOutputStream(
 				new BufferedOutputStream(new FileOutputStream(fileName)));
@@ -47,29 +54,37 @@ public class ChatterRSA {
 			oout.close();
 		}
 	}
+
+	/*
+	 * Reads PRIVATE keys from .file to be returned as PrivateKey object
+	 * This will be used for decryption
+	 */
 	PrivateKey readKeyFromFile(String keyFileName) throws IOException {
 		InputStream in =
-			ServerConnection.class.getResourceAsStream(keyFileName);
+			ChatterRSA.class.getResourceAsStream(keyFileName);
 		ObjectInputStream oin =
 			new ObjectInputStream(new BufferedInputStream(in));
 		try {
 			BigInteger m = (BigInteger) oin.readObject();
 			BigInteger e = (BigInteger) oin.readObject();
-			RSAPrivateKeySpec keySpec = new RSAPublicKeySpec(m, e);
+			RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(m, e);
 			KeyFactory fact = KeyFactory.getInstance("RSA");
 			PrivateKey priKey = fact.generatePrivate(keySpec);
-			return pubKey;
+			return priKey;
 		} catch (Exception e) {
 			throw new RuntimeException("Spurious serialisation error", e);
 		} finally {
 			oin.close();
 		}
 	}
-	public byte[] rsaDecrypt(byte[] data) {
+	/*
+	 * Decrypt data
+	 */
+	public byte[] rsaDecrypt(byte[] data) throws Exception{
 		PrivateKey priKey = readKeyFromFile("/.private.key");
 		Cipher cipher = Cipher.getInstance("RSA");
-		cipher.init(Cipher.DECRYPT_MODE, pubKey);
-		byte[] cipherData = cipher.doFinal(src);
+		cipher.init(Cipher.DECRYPT_MODE, priKey);
+		byte[] cipherData = cipher.doFinal(data);
 		return cipherData;
 	}
 
