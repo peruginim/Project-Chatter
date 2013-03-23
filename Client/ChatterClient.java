@@ -15,7 +15,7 @@ public class ChatterClient {
 	while(true) {
 			
 		if(needHost) {
-			System.out.println("What Host would you like to connect to?\n");
+			System.out.println("What Host would you like to connect to?");
 			host = stdIn.readLine();
 		}
 		
@@ -24,9 +24,9 @@ public class ChatterClient {
 		    out = new PrintWriter(ccSocket.getOutputStream(), true);
 		    in = new BufferedReader(new InputStreamReader(ccSocket.getInputStream()));
 		} catch (UnknownHostException e) {
-		    System.err.println("Don't know about host: "+host+".");
+		    System.err.println("\nDon't know about host: "+host+".");
 		    System.err.println("Would you like to:\n[1] retry current host\n[2] enter new host\n[3] exit Chatter\n");
-		    int reply = stdIn.read();
+		    int reply = Integer.valueOf(stdIn.readLine());
 		    switch(reply) {
 			case 1:	
 				needHost = false;
@@ -42,7 +42,7 @@ public class ChatterClient {
 		    System.err.println("Couldn't get I/O for the connection to: taranis.");
 		    System.exit(1);
 		}
-		break;
+		if(ccSocket != null) break;
 	}
  
         String fromServer;
