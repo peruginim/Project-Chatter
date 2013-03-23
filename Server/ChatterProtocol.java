@@ -25,7 +25,7 @@ public class ChatterProtocol {
 	        String theOutput = null;
 	 
 	        if (state == WAITING) {
-	            theOutput = "Chatin' with Chatter!";
+	            theOutput = "Chatin' with Chatter!\nKnock! Knock!";
 	            state = SENTCHAT;
 	        } else if (state == SENTCHAT) {
 	            if (theInput.equalsIgnoreCase("Who's there?")) {
