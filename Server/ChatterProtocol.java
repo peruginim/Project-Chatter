@@ -4,7 +4,7 @@ import java.io.*;
 public class ChatterProtocol {
 
 	    private static final int WAITING = 0;
-	    private static final int SENTKNOCKKNOCK = 1;
+	    private static final int SENTCHAT = 1;
 	    private static final int SENTCLUE = 2;
 	    private static final int ANOTHER = 3;
 	 
@@ -25,9 +25,9 @@ public class ChatterProtocol {
 	        String theOutput = null;
 	 
 	        if (state == WAITING) {
-	            theOutput = "Knock! Knock!";
-	            state = SENTKNOCKKNOCK;
-	        } else if (state == SENTKNOCKKNOCK) {
+	            theOutput = "Chatin' with Chatter!";
+	            state = SENTCHAT;
+	        } else if (state == SENTCHAT) {
 	            if (theInput.equalsIgnoreCase("Who's there?")) {
 	                theOutput = clues[currentJoke];
 	                state = SENTCLUE;
@@ -44,7 +44,7 @@ public class ChatterProtocol {
 	                clues[currentJoke] + 
 	                " who?\"" + 
 	                "! Try again. Knock! Knock!";
-	                state = SENTKNOCKKNOCK;
+	                state = SENTCHAT;
 	            }
 	        } else if (state == ANOTHER) {
 	            if (theInput.equalsIgnoreCase("y")) {
@@ -53,7 +53,7 @@ public class ChatterProtocol {
 	                    currentJoke = 0;
 	                else
 	                    currentJoke++;
-	                state = SENTKNOCKKNOCK;
+	                state = SENTCHAT;
 	            } else {
 	                theOutput = "Bye.";
 	                state = WAITING;
