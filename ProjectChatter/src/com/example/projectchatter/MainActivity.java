@@ -9,15 +9,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-//import java.util.ArrayList;
-//import java.util.List;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
@@ -92,12 +87,14 @@ public class MainActivity extends Activity implements OnClickListener {
     {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) 
         {
+        	// Create an arraylist of speech results
         	ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+        	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
 			speech_results.setText(matches.get(0));
-        	// Update screen to show the command that was interpreted
-        	
-        	// Once screen is updated, send this info to the server
+
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
