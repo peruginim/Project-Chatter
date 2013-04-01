@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.lang.StringBuilder;
  
 public class ChatterClient {
     public static void main(String[] args) throws IOException {
@@ -47,17 +48,29 @@ public class ChatterClient {
  
         String fromServer;
         String fromUser;
- 
-        while ((fromServer = in.readLine()) != null) {
-            System.out.println("Server: " + fromServer);
-            if (fromServer.equals("Bye."))
-                break;
-             
-            fromUser = stdIn.readLine();
-        if (fromUser != null) {
-                System.out.println("Client: " + fromUser);
-                out.println(fromUser);
-        }
+	StringBuilder build=new StringBuilder();
+ 	int c;
+
+	while(true){
+		build.delete(0, build.capacity());
+		build.trimToSize();
+		build.ensureCapacity(20);
+		while ((c = in.read()) != -1 && c!=0){ //This is to make sure that the client reads until the buffer is empty. Otherwise syncing issues occures.
+			build.append((char)c);	
+		}
+		fromServer=build.toString();
+
+		System.out.println("Server: "+fromServer);
+
+		if (fromServer.equals("Bye."))
+			break;
+		
+
+		fromUser = stdIn.readLine();
+		if (fromUser != null) {
+			System.out.println("Client: " + fromUser);
+			out.println(fromUser);
+		}
         }
  
         out.close();
