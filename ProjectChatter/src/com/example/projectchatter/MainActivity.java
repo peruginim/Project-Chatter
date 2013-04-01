@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 //import java.util.ArrayList;
 //import java.util.List;
 
@@ -64,7 +65,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				// Start voice recording
 				startVoiceRecognitionActivity();
 				// print to logcat
-				Log.d("btn event", "record button pressed");
+				
 				break;
 			
 			// if settings button pressed, open settings screen
@@ -78,8 +79,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private void startVoiceRecognitionActivity() 
 	{
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speech recognition demo");
         startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
     }
@@ -92,11 +92,13 @@ public class MainActivity extends Activity implements OnClickListener {
     {
         if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) 
         {
+        	ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        	TextView speech_results = (TextView)findViewById(R.id.textView1);
+			speech_results.setText(matches.get(0));
         	// Update screen to show the command that was interpreted
         	
         	// Once screen is updated, send this info to the server
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
