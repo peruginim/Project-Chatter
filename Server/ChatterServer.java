@@ -1,4 +1,5 @@
 import java.net.*;
+import java.util.*;
 import java.io.*;
 
 public class ChatterServer extends Thread{
@@ -12,24 +13,30 @@ public class ChatterServer extends Thread{
 			
 		try{
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			String inputLine, outputLine;
+			//BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			DataInputStream in = new DataInputStream(socket.getInputStream());
+			String outputLine;
+			byte[] inputLine = new byte[1024];
 			ChatterProtocol cp = new ChatterProtocol();
 			outputLine = cp.processInput(null);
 			System.out.println(outputLine);
 			printout(out, outputLine);
+			in.readFully(inputLine);
+			System.out.println("TEST");
+			System.out.println(inputLine);
 
-			while ((inputLine = in.readLine()) != null) {
+			while (inputLine != null) {
 				outputLine = cp.processInput(inputLine);
 				System.out.println(inputLine+" : "+ outputLine+"\n");
 				printout(out, outputLine);
 				if (outputLine.equals("Bye."))
 					break;
+				in.readFully(inputLine);
 			}
 			out.close();
 			in.close();
 			socket.close();
-		}catch (IOException e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -40,5 +47,8 @@ public class ChatterServer extends Thread{
 		out.print(string);
 		out.write(0);
 		out.flush();
+	}
+	private byte[] readin(DataInputStream in) {
+			
 	}
 }
