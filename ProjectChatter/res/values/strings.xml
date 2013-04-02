@@ -7,10 +7,10 @@
     <string name="record">Record</string>
     <string name="welcome">Welcome to Project Chatter. Click SETTINGS to set up server and RECORD for speech recording</string>
     <string name="settings_title">Settings</string>
-    <string name="settings_port_default">3459</string>
+    <string name="settings_port_default">4444</string>
     <string name="server_directory">Server Directory</string>
     <string name="port">Port</string>
-    <string name="settings_directory_default">lore.cs.purdue.edu</string>
+    <string name="settings_directory_default">sslab20.cs.purdue.edu</string>
     <string name="settings">Settings</string>
 
 </resources>

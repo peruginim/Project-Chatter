@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.button_record:
 				// Start voice recording
 				startVoiceRecognitionActivity();
-				// print to logcat
+
 				
 				break;
 			
@@ -93,7 +93,6 @@ public class MainActivity extends Activity implements OnClickListener {
         	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
 			speech_results.setText(matches.get(0));
-
 
         }
         super.onActivityResult(requestCode, resultCode, data);
