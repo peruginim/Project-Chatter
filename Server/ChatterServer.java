@@ -48,7 +48,7 @@ public class ChatterServer extends Thread{
 		out.write(0);
 		out.flush();
 	}
-	private byte[] readin(DataInputStream in) {
+//	private byte[] readin(DataInputStream in) {
 			
-	}
+//	}
 }
