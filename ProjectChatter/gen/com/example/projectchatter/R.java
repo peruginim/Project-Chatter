@@ -27,8 +27,8 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f08000b;
-        public static final int button_Save=0x7f080009;
         public static final int button_back=0x7f08000a;
+        public static final int button_connect=0x7f080009;
         public static final int button_record=0x7f080003;
         public static final int button_settings=0x7f080000;
         public static final int editDirectory=0x7f080006;

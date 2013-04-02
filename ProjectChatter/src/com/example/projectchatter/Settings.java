@@ -12,6 +12,7 @@ import android.widget.EditText;
 public class Settings extends Activity implements OnClickListener {
 
 	int content = R.layout.settings;
+	ConnectToServer conn;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class Settings extends Activity implements OnClickListener {
 		setContentView(content);
 		
 		// set up click listener for the save button
-		View save = findViewById(R.id.button_Save);
+		View save = findViewById(R.id.button_connect);
 		save.setOnClickListener(this);
 		
 		View back = findViewById(R.id.button_back);
@@ -42,7 +43,7 @@ public class Settings extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.button_Save:
+			case R.id.button_connect:
 				// create edit-able text fields
 				EditText directory = (EditText) findViewById(R.id.editDirectory);
 				EditText port = (EditText) findViewById(R.id.editPort);
@@ -52,6 +53,9 @@ public class Settings extends Activity implements OnClickListener {
 				if(directory.getText().toString().length() != 0) pref.edit().putString("Directory", directory.getText().toString()).commit();
 				if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
 			
+				// connect to server
+				conn = new ConnectToServer();
+				
 				// show the 'MainActivity' screen again
 				Intent i = 	new Intent(this, MainActivity.class);
 				startActivity(i);
