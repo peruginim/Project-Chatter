@@ -8,17 +8,24 @@ import java.net.UnknownHostException;
 import android.app.Activity;
 
 
-public class ConnectToServer{
+public class ConnectToServer extends Thread{
 
 	int content = R.layout.settings;
 	Socket socket;
 	DataOutputStream DOS;
+	String data="";
+	boolean running=true;
 	
-    public ConnectToServer() {
+	public void sendData(String string){
+		data=string;
+	}
+	
+	
+    public void run() {
         
         // create socket connection
 		try {
-			socket = new Socket("sslab14.cs.purdue.edu", 4444);
+			socket = new Socket("moore07.cs.purdue.edu", 4444);
 			DOS = new DataOutputStream(socket.getOutputStream());;
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -30,7 +37,13 @@ public class ConnectToServer{
 		
 		if (socket != null && DOS != null){
 			try {
-				DOS.writeBytes("SUPPPP\n");
+				while(running){
+					if(!data.equals("")){
+						DOS.writeBytes(data+"\n");
+						DOS.flush();
+						data="";
+					}
+				}
 				DOS.close();
 				socket.close();
 			}

@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-	
+	ConnectToServer io;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,6 +40,10 @@ public class MainActivity extends Activity implements OnClickListener {
             record.setEnabled(false);
             //record.setText("Recognizer not present");
         }
+        io=new ConnectToServer();
+        io.start();
+        io.sendData("Hello, the app has initialized");
+        
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class MainActivity extends Activity implements OnClickListener {
     		// if record button pressed, add functionality...  
 			case R.id.button_record:
 				// Start voice recording
+				io.sendData("You hit the record button");
 				startVoiceRecognitionActivity();
 
 				
@@ -65,6 +70,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			
 			// if settings button pressed, open settings screen
     		case R.id.button_settings:
+    			io.sendData("You hit the settings button");
     			Intent i2 = new Intent(this, Settings.class);
     			startActivity(i2);
     			break;
