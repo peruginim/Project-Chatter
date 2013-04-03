@@ -29,7 +29,7 @@ public class Settings extends Activity implements OnClickListener {
 		
 		// save persistent application data in SharedPreferences structure
 		SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-		
+
 		// create edit-able text fields
 		EditText directory = (EditText) findViewById(R.id.editDirectory);
 		EditText port = (EditText) findViewById(R.id.editPort);

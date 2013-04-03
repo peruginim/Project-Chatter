@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
+import android.util.Log;
 
 
 public class ConnectToServer extends Thread{
@@ -26,6 +27,8 @@ public class ConnectToServer extends Thread{
         // create socket connection
 		try {
 			socket = new Socket("moore07.cs.purdue.edu", 4444);
+			socket.setKeepAlive(true);
+			Log.i("HELLO","GOODBYE");
 			DOS = new DataOutputStream(socket.getOutputStream());;
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -40,7 +43,7 @@ public class ConnectToServer extends Thread{
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");
-						DOS.flush();
+						//DOS.flush();
 						data="";
 					}
 				}
