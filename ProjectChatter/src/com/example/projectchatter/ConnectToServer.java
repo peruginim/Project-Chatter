@@ -1,5 +1,6 @@
 package com.example.projectchatter;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -16,17 +17,33 @@ public class ConnectToServer extends Thread{
 	DataOutputStream DOS;
 	String data="";
 	boolean running=true;
+	String server;
+	int port;
 	
 	public void sendData(String string){
 		data=string;
 	}
 	
+	public void close(){
+		running=false;
+	}
+	
+	public ConnectToServer(){
+		server="moore07.cs.purdue.edu";
+		port=4444;
+	}
+	
+	public ConnectToServer(String serv, int port){
+		this.port=port;
+		server=serv;
+	}
 	
     public void run() {
         
         // create socket connection
 		try {
-			socket = new Socket("moore07.cs.purdue.edu", 4444);
+			Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port);
+			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
 			Log.i("HELLO","GOODBYE");
 			DOS = new DataOutputStream(socket.getOutputStream());;
@@ -40,6 +57,7 @@ public class ConnectToServer extends Thread{
 		
 		if (socket != null && DOS != null){
 			try {
+				DOS.writeBytes("Phone is connected!\n");
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");

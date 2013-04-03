@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,7 +20,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-	static ConnectToServer io = new ConnectToServer();
+	static ConnectToServer io;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,9 +43,19 @@ public class MainActivity extends Activity implements OnClickListener {
             record.setEnabled(false);
             //record.setText("Recognizer not present");
         }
-        if(!io.isAlive()){
+        
+        Log.i("DEBUG", "io: "+io);
+        
+        if(io==null){
+        	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+        	String serv=pref.getString("Directory", "lore.cs.purdue.edu");
+			int p=Integer.parseInt(pref.getString("Port", "3459"));
+        	io=new ConnectToServer(serv, p);
         	io.start();
         }
+        
+        Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
+ 
         io.sendData("Main activity has been created");
         
 	}
@@ -98,6 +111,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
 			speech_results.setText(matches.get(0));
+			io.sendData("Voice match: "+matches.get(0));
 
         }
         super.onActivityResult(requestCode, resultCode, data);

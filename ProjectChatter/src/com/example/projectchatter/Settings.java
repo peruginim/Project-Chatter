@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 public class Settings extends Activity implements OnClickListener {
 
 	int content = R.layout.settings;
-	ConnectToServer conn;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,9 +54,15 @@ public class Settings extends Activity implements OnClickListener {
 				if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
 			
 				// connect to server
-				conn = new ConnectToServer();
+				String serv=directory.getText().toString();
+				int p=Integer.parseInt(port.getText().toString());
+				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p);
 				
 				// show the 'MainActivity' screen again
+				MainActivity.io.close();
+				MainActivity.io=new ConnectToServer(serv, p);
+				MainActivity.io.start();
+				
 				Intent i = 	new Intent(this, MainActivity.class);
 				startActivity(i);
 				break;
