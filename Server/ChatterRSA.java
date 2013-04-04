@@ -82,7 +82,7 @@ public class ChatterRSA {
 	 */
 	public byte[] rsaDecrypt(byte[] data) throws Exception{
 		PrivateKey priKey = readKeyFromFile("/.private.key");
-		Cipher cipher = Cipher.getInstance("RSA/ECB/NoPadding");
+		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, priKey);
 		byte[] cipherData = cipher.doFinal(data);
 		return cipherData;
