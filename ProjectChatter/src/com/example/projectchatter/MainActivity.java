@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements OnClickListener {
         
         //setup Settings button that goes to the setting xml
         View settings = findViewById(R.id.button_settings);
+        settings.setBackgroundColor(Color.TRANSPARENT);
         settings.setOnClickListener(this);
         
         PackageManager pm = getPackageManager();

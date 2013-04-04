@@ -6,17 +6,18 @@
 
     <ImageButton
         android:id="@+id/button_settings"
-        android:contentDescription="@string/desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:contentDescription="@string/desc"
+        android:scaleType="fitCenter"
         android:src="@drawable/settings" />
 
     <ImageButton
         android:id="@+id/button_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.53"
+        android:layout_weight="0.52"
         android:scaleType="centerCrop"
         android:src="@drawable/mic_icon" />
 
@@ -24,7 +25,7 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_weight="0.29"
+        android:layout_weight="0.35"
         android:background="#202020"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
