@@ -23,7 +23,8 @@ public final class R {
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int mic=0x7f020001;
-        public static final int settings=0x7f020002;
+        public static final int mic_icon=0x7f020002;
+        public static final int settings=0x7f020003;
     }
     public static final class id {
         public static final int action_settings=0x7f08000b;
@@ -63,6 +64,8 @@ public final class R {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        
+        Used to be android:Theme.Light
     
 
             Theme customizations available in newer API levels can go in
@@ -78,6 +81,8 @@ public final class R {
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
+        
+        Used to be android:Theme.Holo.Light.DarkActionBar
     
  API 14 theme customizations can go here. 
          */

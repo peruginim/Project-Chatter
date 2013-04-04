@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-        //setup Record button that goes to the record xml
+        //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
         //record.setOnClickListener(this);
         
