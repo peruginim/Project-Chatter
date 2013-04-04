@@ -31,6 +31,6 @@
         android:paddingRight="10dp"
         android:paddingTop="20dp"
         android:text="@string/welcome"
-        android:textSize="18sp" />
+        android:textSize="25sp" />
 
 </LinearLayout>
