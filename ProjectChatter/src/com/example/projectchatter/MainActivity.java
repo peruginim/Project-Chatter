@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		
         //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
+        record.setBackgroundColor(Color.TRANSPARENT);
         //record.setOnClickListener(this);
         
         //setup Settings button that goes to the setting xml

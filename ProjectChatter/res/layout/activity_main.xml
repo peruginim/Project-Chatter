@@ -35,7 +35,8 @@
 
     <Button
         android:id="@+id/button_record"
-        android:layout_width="match_parent"
+        style="@style/AppBaseTheme"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.30"
         android:text="@string/record"
