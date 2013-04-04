@@ -12,12 +12,11 @@
         android:layout_gravity="right"
         android:src="@drawable/settings" />
 
-    <ImageView
-        android:id="@+id/imageView1"
+    <ImageButton
+        android:id="@+id/button_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.75"
-        android:contentDescription="@string/desc"
+        android:layout_weight="0.53"
         android:scaleType="centerCrop"
         android:src="@drawable/mic_icon" />
 
@@ -25,21 +24,12 @@
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_weight="0.15"
-        android:background="#808080"
+        android:layout_weight="0.29"
+        android:background="#202020"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="20dp"
         android:text="@string/welcome"
         android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/button_record"
-        style="@style/AppBaseTheme"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.30"
-        android:text="@string/record"
-        android:textSize="24sp" />
 
 </LinearLayout>

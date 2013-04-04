@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements OnClickListener {
         //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
         record.setBackgroundColor(Color.TRANSPARENT);
-        //record.setOnClickListener(this);
+        record.setOnClickListener(this);
         
         //setup Settings button that goes to the setting xml
         View settings = findViewById(R.id.button_settings);
