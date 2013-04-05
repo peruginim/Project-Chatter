@@ -50,7 +50,7 @@ public class ChatterServer extends Thread{
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String inputLine, outputLine;
-			ChatterProtocol cp = new ChatterProtocol();
+			CustomProtocol cp = new CustomProtocol();
 
 			String key = in.readLine();
 			if(checkKey(key)){
