@@ -55,6 +55,36 @@ public class ChatterClient {
 			}
 			if(ccSocket != null) break;
 		}
+		//connection verified with server
+		//generating string
+//		File f = new File("/Users/nathanwisniewski/Desktop/Project-Chatter/Client/key.txt");
+		File f = new File("key.txt");
+		if(!f.exists()){
+
+		System.out.println("DOESNTEXIST");
+		int random;
+		char randChar;
+		String randString = "";
+		for(int i = 0; i < 124; i++){
+		random = (int)(Math.random()*126);
+		if(random < 33) random = random + 33;
+		randChar = (char)(random);
+		randString = randString+randChar;
+		}
+		PrintWriter outFile = new PrintWriter(new FileWriter("key.txt"));
+		System.out.println(randString);
+		System.out.println("adding this to key");
+		outFile.println(randString);
+		outFile.flush();
+		outFile.close();
+		out.println(randString);
+		}else{
+		Scanner inputFile = new Scanner(f);
+		//BufferedReader inputFile = new BufferedReader(new FileReader("key.txt"));
+		String key = inputFile.nextLine();
+		out.println(key);
+		System.out.println(key);
+		}
 
 		String fromServer;
 		String fromUser;
