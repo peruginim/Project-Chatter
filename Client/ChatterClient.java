@@ -23,8 +23,8 @@ public class ChatterClient {
 		//Get the host name from the user
 		//This well need to be edit when ported to the phone
 
+		//This establishes a connection
 		while(true) {
-
 			if(needHost) {
 				System.out.println("What Host would you like to connect to?");
 				host = stdIn.readLine();
@@ -50,41 +50,21 @@ public class ChatterClient {
 						System.exit(1);
 				}
 			} catch (IOException e) {
-				System.err.println("Couldn't get I/O for the connection to: taranis.");
+				System.err.println("Couldn't get I/O.");
 				System.exit(1);
 			}
 			if(ccSocket != null) break;
 		}
+	
+		System.out.println(ccSocket.getInetAddress()+" : "+ccSocket.getLocalAddress());
+
 		//connection verified with server
 		//generating string
 //		File f = new File("/Users/nathanwisniewski/Desktop/Project-Chatter/Client/key.txt");
-		File f = new File("key.txt");
-		if(!f.exists()){
-
-		System.out.println("DOESNTEXIST");
-		int random;
-		char randChar;
-		String randString = "";
-		for(int i = 0; i < 124; i++){
-		random = (int)(Math.random()*126);
-		if(random < 33) random = random + 33;
-		randChar = (char)(random);
-		randString = randString+randChar;
-		}
-		PrintWriter outFile = new PrintWriter(new FileWriter("key.txt"));
-		System.out.println(randString);
-		System.out.println("adding this to key");
-		outFile.println(randString);
-		outFile.flush();
-		outFile.close();
-		out.println(randString);
-		}else{
-		Scanner inputFile = new Scanner(f);
-		//BufferedReader inputFile = new BufferedReader(new FileReader("key.txt"));
-		String key = inputFile.nextLine();
+		
+		//Tries to open file key.txt and read out a string
+		String key=getKey();
 		out.println(key);
-		System.out.println(key);
-		}
 
 		String fromServer;
 		String fromUser;
@@ -117,5 +97,33 @@ public class ChatterClient {
 		in.close();
 		stdIn.close();
 		ccSocket.close();
+	}
+
+	static String getKey() throws Exception{
+		String key="";
+		File f = new File("key.txt");
+		if(!f.exists()){
+			System.out.println("DOESNTEXIST");
+			int random;
+			char randChar;
+			for(int i = 0; i < 124; i++){ //Generates random string
+				random = (int)(Math.random()*126);
+				if(random < 33) random = random + 33;
+				key = key+(char)(random);
+			}
+
+			PrintWriter outFile = new PrintWriter(new FileWriter("key.txt"));
+			System.out.println(key);
+			System.out.println("adding this to key");
+			outFile.println(key);
+			outFile.flush();
+			outFile.close();
+		}else{ //If keyfile exists, then get key from file
+			Scanner inputFile = new Scanner(f);
+			key = inputFile.nextLine();
+			System.out.println(key);
+		}
+		return key;
+
 	}
 }

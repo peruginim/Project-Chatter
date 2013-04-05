@@ -9,6 +9,41 @@ public class ChatterServer extends Thread{
 		super("chatterServer");
 		this.socket = socket;
 	}
+
+	private boolean checkKey(String key) throws Exception{ //true means that either that the server already has the key for that client or the server added the key, false means that the server doesn't have the key and the user declined the connection.
+		File f = new File("keylist.txt");
+		if(f.exists()){
+			Scanner inFile = new Scanner(f);
+			while(inFile.hasNextLine()){
+				String compare=inFile.nextLine();
+				if(compare.equals(key)){
+					System.out.println("Key already exists");
+					return true;
+				}
+			}
+		}
+
+		boolean b = confirm();
+		if(b){
+			PrintWriter outFile = new PrintWriter(new FileWriter("keylist.txt"));
+			outFile.println(key);
+			outFile.close();
+			System.out.println("Key added to file");
+			return true;
+		}
+		else return false;
+
+		//}
+	
+	}
+
+	private boolean confirm(){
+		Scanner in = new Scanner(System.in);
+		System.out.println("Do you want to allow " + socket.getInetAddress() + " to connect? (y/n)");
+		String line = in.nextLine();
+		if(line.equals("y"))return true;
+		else return false;
+	}
 	public void run(){
 
 		try{
@@ -16,16 +51,21 @@ public class ChatterServer extends Thread{
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String inputLine, outputLine;
 			ChatterProtocol cp = new ChatterProtocol();
-			outputLine = cp.processInput(null);
-			System.out.println(outputLine);
-			printout(out, outputLine);
 
-			while ((inputLine = in.readLine()) != null) {
-				outputLine = cp.processInput(inputLine);
-				System.out.println(inputLine+" : "+ outputLine+"\n");
+			String key = in.readLine();
+			if(checkKey(key)){
+				//Start IO
+				outputLine = cp.processInput(null);
+				System.out.println(outputLine);
 				printout(out, outputLine);
-				if (outputLine.equals("Bye."))
-					break;
+
+				while ((inputLine = in.readLine()) != null) {
+					outputLine = cp.processInput(inputLine);
+					System.out.println(inputLine+" : "+ outputLine+"\n");
+					printout(out, outputLine);
+					if (outputLine.equals("Bye."))
+						break;
+				}
 			}
 			out.close();
 			in.close();
