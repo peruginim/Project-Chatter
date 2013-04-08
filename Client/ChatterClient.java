@@ -82,7 +82,7 @@ public class ChatterClient {
 
 			System.out.println("Server: "+fromServer);
 
-			if (fromServer.equals("Bye."))
+			if (fromServer.equals("Goodbye."))
 				break;
 
 

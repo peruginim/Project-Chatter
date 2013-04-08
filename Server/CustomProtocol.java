@@ -26,6 +26,10 @@ public class CustomProtocol{
 				return "Invalid parse: " + input;
 			}
 		}
+
+		if(input.equals("exit") || input.equals("quit") || input.equals(":q")){
+			return("Goodbye.");
+		}
 		return "Did not understand the command.";
 
 	}
