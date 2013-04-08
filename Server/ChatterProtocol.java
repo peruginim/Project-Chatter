@@ -27,34 +27,6 @@ public class ChatterProtocol {
 		"Is there an owl in here?",
 		"Is there an echo in here?" };
 
-	public String processInput(byte[] theInput) throws Exception{
-		
-		String theOutput = null;
-		String input = null;
-		if(theInput != null) input = Arrays.toString(decoder.rsaDecrypt(theInput));
-		if(state == WAITING) {
-			theOutput = "Chatin' with Secret Chatter\n";
-			state = SENTCHAT;
-		} else if (state == SENTCHAT) {
-			if(input.equals("Quit")) {
-				theOutput = "Bye.";
-			}else {
-				theOutput = "Did you mean this?\n" + input;
-				state = CONFIRM;
-			}
-		} else if (state == CONFIRM) {
-			if (input.equals("y")) {
-				theOutput = "Awesome!";
-				state = WAITING;
-			} else {
-				theOutput = "Error!";
-			}	
-		}
-		return theOutput;
-
-	}
-
-	/*
 
 	public String processInput(String theInput) {
 		String theOutput = null;
@@ -102,5 +74,5 @@ public class ChatterProtocol {
 		}
 		return theOutput;
 	}
-	*/
+	
 }

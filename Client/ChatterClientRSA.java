@@ -18,7 +18,7 @@ public class ChatterClientRSA {
 			BigInteger m = (BigInteger) oin.readObject();
 			BigInteger e = (BigInteger) oin.readObject();
 			RSAPublicKeySpec keySpec = new RSAPublicKeySpec(m, e);
-			KeyFactory fact = KeyFactory.getInstance("RSA");
+			KeyFactory fact = KeyFactory.getInstance("DES");
 			PublicKey pubKey = fact.generatePublic(keySpec);
 			return pubKey;
 		} catch (Exception e) {
@@ -32,7 +32,7 @@ public class ChatterClientRSA {
 	 */
 	public byte[] rsaDecrypt(byte[] data) throws Exception{
 		PublicKey pubKey = readKeyFromFile("/.public.key");
-		Cipher cipher = Cipher.getInstance("RSA");
+		Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, pubKey);
 		byte[] cipherData = cipher.doFinal(data);
 		return cipherData;
