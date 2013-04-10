@@ -29,7 +29,7 @@ public class ConnectToServer extends Thread{
 	}
 	
 	public ConnectToServer(){
-		server="moore07.cs.purdue.edu";
+		server="sslab10.cs.purdue.edu";
 		port=4444;
 	}
 	

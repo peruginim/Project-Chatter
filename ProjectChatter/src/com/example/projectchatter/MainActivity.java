@@ -22,6 +22,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	static ConnectToServer io;
+	private static String client_identifier = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,8 +53,9 @@ public class MainActivity extends Activity implements OnClickListener {
         
         if(io==null){
         	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-        	String serv=pref.getString("Directory", "lore.cs.purdue.edu");
-			int p=Integer.parseInt(pref.getString("Port", "3459"));
+        	String serv=pref.getString("Directory", "sslab10.cs.purdue.edu");
+        	
+			int p=Integer.parseInt(pref.getString("Port", "4444"));
         	io=new ConnectToServer(serv, p);
         	io.start();
         }
@@ -60,6 +63,16 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
  
         io.sendData("Main activity has been created");
+        
+        try {
+			client_identifier = getKey();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        Log.i("client id", client_identifier);
+        
         
 	}
 
@@ -119,4 +132,39 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    
+    
+	static String getKey() throws Exception{
+		String key="";
+		//File f = new File("key.txt");
+		
+		if( client_identifier.equals("") ){
+			Log.i("cliend id", "DOES NOT EXIST");
+			int random;
+			char randChar;
+			for(int i = 0; i < 124; i++){ //Generates random string
+				random = (int)(Math.random()*126);
+				if(random < 33) random = random + 33;
+				key = key+(char)(random);
+			}
+
+			Log.i("the key", key);
+			/*
+			PrintWriter outFile = new PrintWriter(new FileWriter("key.txt"));
+			System.out.println(key);
+			System.out.println("adding this to key");
+			outFile.println(key);
+			outFile.flush();
+			outFile.close();
+			*/
+		}else{ //If keyfile exists, then get key from file
+			//Scanner inputFile = new Scanner(f);
+			//key = inputFile.nextLine();
+			//System.out.println(key);
+		}
+	return key;
+
+	}
+    
+    
 }
