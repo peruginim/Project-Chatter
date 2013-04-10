@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements OnClickListener {
             //record.setText("Recognizer not present");
         }
         
-        Log.i("DEBUG", "io: "+io);
+        //Log.i("DEBUG", "io: "+io);
         
       
         
@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements OnClickListener {
             	pref.edit().putString("client_id", getKey()).commit();
             }
             
-        	Log.i("client id", pref.getString("client_id", "default"));
+        	//Log.i("client id", pref.getString("client_id", "default"));
         	
         	String serv=pref.getString("Directory", "data.cs.purdue.edu");
 			int p=Integer.parseInt(pref.getString("Port", "3456"));
@@ -73,9 +73,9 @@ public class MainActivity extends Activity implements OnClickListener {
         	io.start();
         }
         
-        Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
+       // Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
  
-        io.sendData("Main activity has been created");
+        //io.sendData("Main activity has been created");
         
 	}
 
@@ -95,13 +95,13 @@ public class MainActivity extends Activity implements OnClickListener {
     		// if record button pressed, add functionality...  
 			case R.id.button_record:
 				// Start voice recording
-				io.sendData("You hit the record button");
+				//io.sendData("You hit the record button");
 				startVoiceRecognitionActivity();
 				break;
 			
 			// if settings button pressed, open settings screen
     		case R.id.button_settings:
-    			io.sendData("You hit the settings button");
+    			//io.sendData("You hit the settings button");
     			Intent i2 = new Intent(this, Settings.class);
     			startActivity(i2);
     			break;
@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
 			speech_results.setText(matches.get(0));
-			io.sendData("Voice match: "+matches.get(0));
+			io.sendData(matches.get(0));
 
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,7 +142,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		//File f = new File("key.txt");
 		
 		if( client_identifier.equals("") ){
-			Log.i("cliend id", "DOES NOT EXIST");
+			//Log.i("cliend id", "DOES NOT EXIST");
 			int random;
 			char randChar;
 			for(int i = 0; i < 124; i++){ //Generates random string
@@ -151,7 +151,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				key = key+(char)(random);
 			}
 
-			Log.i("the key", key);
+			//Log.i("the key", key);
 			
 		}
 		return key;

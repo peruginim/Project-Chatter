@@ -44,10 +44,10 @@ public class ConnectToServer extends Thread{
         
         // create socket connection
 		try {
-			Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
+			//Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
-			Log.i("HELLO","GOODBYE");
+			//Log.i("HELLO","GOODBYE");
 			DOS = new DataOutputStream(socket.getOutputStream());;
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
