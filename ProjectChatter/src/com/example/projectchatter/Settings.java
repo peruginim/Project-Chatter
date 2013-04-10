@@ -62,7 +62,7 @@ public class Settings extends Activity implements OnClickListener {
 				
 				// show the 'MainActivity' screen again
 				MainActivity.io.close();
-				MainActivity.io=new ConnectToServer(serv, p, "blah");
+				MainActivity.io=new ConnectToServer(serv, p, clientid);
 				MainActivity.io.start();
 				
 				Intent i = 	new Intent(this, MainActivity.class);
