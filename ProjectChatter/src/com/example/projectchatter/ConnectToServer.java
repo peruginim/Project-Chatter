@@ -44,7 +44,7 @@ public class ConnectToServer extends Thread{
         
         // create socket connection
 		try {
-			Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port);
+			Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
 			Log.i("HELLO","GOODBYE");
@@ -59,7 +59,8 @@ public class ConnectToServer extends Thread{
 		
 		if (socket != null && DOS != null){
 			try {
-				DOS.writeBytes("Phone is connected!\n");
+				DOS.writeBytes(clientid+"\n");
+				
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");
