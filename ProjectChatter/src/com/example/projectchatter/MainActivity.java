@@ -51,28 +51,31 @@ public class MainActivity extends Activity implements OnClickListener {
         
         Log.i("DEBUG", "io: "+io);
         
+      
+        
+        
         if(io==null){
-        	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-        	String serv=pref.getString("Directory", "sslab10.cs.purdue.edu");
         	
-			int p=Integer.parseInt(pref.getString("Port", "4444"));
-        	io=new ConnectToServer(serv, p);
+        	
+        	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+        	
+            if(!pref.contains("client_id")){
+            	pref.edit().putString("client_id", getKey()).commit();
+            }
+            
+        	Log.i("client id", pref.getString("client_id", "default"));
+        	
+        	String serv=pref.getString("Directory", "data.cs.purdue.edu");
+			int p=Integer.parseInt(pref.getString("Port", "3456"));
+			String clientid=pref.getString("client_id", "clientid");
+			
+        	io=new ConnectToServer(serv, p, clientid);
         	io.start();
         }
         
         Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
  
         io.sendData("Main activity has been created");
-        
-        try {
-			client_identifier = getKey();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        Log.i("client id", client_identifier);
-        
         
 	}
 
@@ -134,7 +137,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     
     
-	static String getKey() throws Exception{
+	static String getKey(){
 		String key="";
 		//File f = new File("key.txt");
 		
@@ -149,20 +152,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 
 			Log.i("the key", key);
-			/*
-			PrintWriter outFile = new PrintWriter(new FileWriter("key.txt"));
-			System.out.println(key);
-			System.out.println("adding this to key");
-			outFile.println(key);
-			outFile.flush();
-			outFile.close();
-			*/
-		}else{ //If keyfile exists, then get key from file
-			//Scanner inputFile = new Scanner(f);
-			//key = inputFile.nextLine();
-			//System.out.println(key);
+			
 		}
-	return key;
+		return key;
 
 	}
     

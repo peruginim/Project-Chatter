@@ -19,6 +19,7 @@ public class ConnectToServer extends Thread{
 	boolean running=true;
 	String server;
 	int port;
+	String clientid;
 	
 	public void sendData(String string){
 		data=string;
@@ -33,9 +34,10 @@ public class ConnectToServer extends Thread{
 		port=4444;
 	}
 	
-	public ConnectToServer(String serv, int port){
+	public ConnectToServer(String serv, int port, String clientid){
 		this.port=port;
 		server=serv;
+		this.clientid = clientid;
 	}
 	
     public void run() {
