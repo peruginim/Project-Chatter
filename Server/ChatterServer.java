@@ -25,7 +25,7 @@ public class ChatterServer extends Thread{
 
 		boolean b = confirm();
 		if(b){
-			PrintWriter outFile = new PrintWriter(new FileWriter("keylist.txt"));
+			PrintWriter outFile = new PrintWriter(new FileWriter("keylist.txt",true));
 			outFile.println(key);
 			outFile.close();
 			System.out.println("Key added to file");
