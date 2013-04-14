@@ -8,6 +8,7 @@
     <string name="welcome">Welcome to Project Chatter. Click Settings to connect to a server and Record for command recording.</string>
     <string name="settings_title">Settings</string>
     <string name="settings_port_default">4444</string>
+    <string name="mic_desctiption">ImageButton for recording voice.</string>
     <string name="server_directory">Server Directory</string>
     <string name = "app_name_launcher">Chatter</string>
     <string name="port">Port</string>

@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.52"
-        android:contentDescription="Mic Button"
+        android:contentDescription="@string/mic_desctiption"
         android:scaleType="centerCrop"
         android:src="@drawable/mic_icon" />
 

@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.TextView;
 
 
 public class ConnectToServer extends Thread{
@@ -48,7 +49,7 @@ public class ConnectToServer extends Thread{
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
 			//Log.i("HELLO","GOODBYE");
-			DOS = new DataOutputStream(socket.getOutputStream());;
+			DOS = new DataOutputStream(socket.getOutputStream());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

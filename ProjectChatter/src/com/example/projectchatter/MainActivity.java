@@ -81,7 +81,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			
         	io=new ConnectToServer(serv, p, clientid);
         	io.start();
-        	status.setText("Connected... Connected... Connected...");
         	
         }
         

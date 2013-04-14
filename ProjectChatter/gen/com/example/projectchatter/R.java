@@ -51,14 +51,15 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int app_name_launcher=0x7f050008;
-        public static final int desc=0x7f05000c;
+        public static final int app_name_launcher=0x7f050009;
+        public static final int desc=0x7f05000d;
         public static final int hello_world=0x7f050002;
-        public static final int port=0x7f050009;
+        public static final int mic_desctiption=0x7f050007;
+        public static final int port=0x7f05000a;
         public static final int record=0x7f050003;
-        public static final int server_directory=0x7f050007;
-        public static final int settings=0x7f05000b;
-        public static final int settings_directory_default=0x7f05000a;
+        public static final int server_directory=0x7f050008;
+        public static final int settings=0x7f05000c;
+        public static final int settings_directory_default=0x7f05000b;
         public static final int settings_port_default=0x7f050006;
         public static final int settings_title=0x7f050005;
         public static final int welcome=0x7f050004;
