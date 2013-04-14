@@ -4,6 +4,20 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/connection_status"
+        android:layout_width="254dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:lines="1"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Connection Status Goes Here... Connection Status Goes Here... Connection Status Goes Here..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
     <ImageButton
         android:id="@+id/button_settings"
         android:layout_width="wrap_content"
@@ -18,12 +32,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.52"
+        android:contentDescription="Mic Button"
         android:scaleType="centerCrop"
         android:src="@drawable/mic_icon" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
+        android:maxLines = "64"
+		android:scrollbars = "vertical"
+		android:gravity="bottom"
         android:layout_height="100dp"
         android:layout_weight="0.35"
         android:background="#202020"

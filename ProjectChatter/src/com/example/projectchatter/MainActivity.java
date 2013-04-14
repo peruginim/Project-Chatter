@@ -12,6 +12,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.TextUtils.TruncateAt;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -29,6 +31,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		TextView status = (TextView)findViewById(R.id.connection_status);
+		status.setSelected(true);
+		status.setEllipsize(TruncateAt.MARQUEE);
+		status.setSingleLine(true);
+		
         //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
         record.setBackgroundColor(Color.TRANSPARENT);
@@ -38,6 +45,9 @@ public class MainActivity extends Activity implements OnClickListener {
         View settings = findViewById(R.id.button_settings);
         settings.setBackgroundColor(Color.TRANSPARENT);
         settings.setOnClickListener(this);
+        
+        //TextView speech_results = (TextView)findViewById(R.id.textView1);
+        //speech_results.setMovementMethod(new ScrollingMovementMethod());
         
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(
@@ -71,6 +81,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			
         	io=new ConnectToServer(serv, p, clientid);
         	io.start();
+        	status.setText("Connected... Connected... Connected...");
+        	
         }
         
        // Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
@@ -78,7 +90,6 @@ public class MainActivity extends Activity implements OnClickListener {
         //io.sendData("Main activity has been created");
         
 	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -129,7 +140,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
         	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
-			speech_results.setText(matches.get(0));
+        	speech_results.setMovementMethod(new ScrollingMovementMethod());
+        	speech_results.append("\n" + matches.get(0));
 			io.sendData(matches.get(0));
 
         }
