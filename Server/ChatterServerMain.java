@@ -2,13 +2,13 @@ import java.net.*;
 import java.io.*;
 
 public class ChatterServerMain {
-	public static void main(String[] args) throws IOException {
+	public static void startServer(int port) throws IOException {
 		ServerSocket serverSocket = null;
 		boolean listening = true;
 		try {
-		    serverSocket = new ServerSocket(4444);
+		    serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-		    System.out.println("Could not listen on port: 4444");
+		    System.out.println("Could not listen on port: "+port);
 		    System.exit(1);
 		}
 		while(listening)

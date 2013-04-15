@@ -4,6 +4,7 @@
 #Java Compliler and Flags
 JFLAGS = -g
 JC = javac
+JLIB = Chatter.jar
 
 CLASSES = \
 	ChatterServer.java \
@@ -13,7 +14,7 @@ CLASSES = \
 
 #Create .class files from .java files
 all: $(CLASSES)
-	$(JC) $(JFLAGS) *.java
+	$(JC) $(JFLAGS) *.java -cp $(JLIB)
 
 keygen: ChatterRSA.class
 	java ChatterRSA

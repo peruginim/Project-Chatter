@@ -33,4 +33,12 @@ public class CustomProtocol{
 		return "Did not understand the command.";
 
 	}
+	public static void main(String args[]) {
+		ChatterServerMain server = new ChatterServerMain();
+		try {
+			server.startServer(4444);
+		}catch (Exception e) {
+			System.out.print(e);
+		}
+	}
 }
