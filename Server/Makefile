@@ -7,10 +7,7 @@ JC = javac
 JLIB = Chatter.jar
 
 CLASSES = \
-	ChatterServer.java \
-	ChatterProtocol.java \
-	ChatterRSA.java \
-	ChatterServerMain.java
+	CustomProtocol.java
 
 #Create .class files from .java files
 all: $(CLASSES)
@@ -18,5 +15,8 @@ all: $(CLASSES)
 
 keygen: ChatterRSA.class
 	java ChatterRSA
+
+run: CustomProtocol.class
+	java -cp .:$(JLIB) CustomProtocol
 clean:
 	$(RM) *.class

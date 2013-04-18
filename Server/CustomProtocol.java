@@ -67,7 +67,8 @@ public class CustomProtocol{
 	public static void main(String args[]) {
 		ChatterServerMain server = new ChatterServerMain();
 		try {
-			server.startServer(4444);
+			int port = 4444;
+			server.startServer(port);
 		}catch (Exception e) {
 			System.out.print(e);
 		}
