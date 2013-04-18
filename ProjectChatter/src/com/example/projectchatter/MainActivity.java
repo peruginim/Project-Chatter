@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.TextUtils.TruncateAt;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -21,18 +24,30 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	static ConnectToServer io;
+	private static String client_identifier = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-        //setup Record button that goes to the record xml
+		TextView status = (TextView)findViewById(R.id.connection_status);
+		status.setSelected(true);
+		status.setEllipsize(TruncateAt.MARQUEE);
+		status.setSingleLine(true);
+		
+        //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
-        //record.setOnClickListener(this);
+        record.setBackgroundColor(Color.TRANSPARENT);
+        record.setOnClickListener(this);
         
         //setup Settings button that goes to the setting xml
         View settings = findViewById(R.id.button_settings);
+        settings.setBackgroundColor(Color.TRANSPARENT);
         settings.setOnClickListener(this);
+        
+        //TextView speech_results = (TextView)findViewById(R.id.textView1);
+        //speech_results.setMovementMethod(new ScrollingMovementMethod());
         
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(
@@ -44,22 +59,36 @@ public class MainActivity extends Activity implements OnClickListener {
             //record.setText("Recognizer not present");
         }
         
-        Log.i("DEBUG", "io: "+io);
+        //Log.i("DEBUG", "io: "+io);
+        
+      
+        
         
         if(io==null){
+        	
+        	
         	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-        	String serv=pref.getString("Directory", "lore.cs.purdue.edu");
-			int p=Integer.parseInt(pref.getString("Port", "3459"));
-        	io=new ConnectToServer(serv, p);
+        	
+            if(!pref.contains("client_id")){
+            	pref.edit().putString("client_id", getKey()).commit();
+            }
+            
+        	//Log.i("client id", pref.getString("client_id", "default"));
+        	
+        	String serv=pref.getString("Directory", "data.cs.purdue.edu");
+			int p=Integer.parseInt(pref.getString("Port", "3456"));
+			String clientid=pref.getString("client_id", "clientid");
+			
+        	io=new ConnectToServer(serv, p, clientid);
         	io.start();
+        	
         }
         
-        Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
+       // Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
  
-        io.sendData("Main activity has been created");
+        //io.sendData("Main activity has been created");
         
 	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -76,13 +105,13 @@ public class MainActivity extends Activity implements OnClickListener {
     		// if record button pressed, add functionality...  
 			case R.id.button_record:
 				// Start voice recording
-				io.sendData("You hit the record button");
+				//io.sendData("You hit the record button");
 				startVoiceRecognitionActivity();
 				break;
 			
 			// if settings button pressed, open settings screen
     		case R.id.button_settings:
-    			io.sendData("You hit the settings button");
+    			//io.sendData("You hit the settings button");
     			Intent i2 = new Intent(this, Settings.class);
     			startActivity(i2);
     			break;
@@ -110,10 +139,35 @@ public class MainActivity extends Activity implements OnClickListener {
 
         	// Set textfield to first result
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
-			speech_results.setText(matches.get(0));
-			io.sendData("Voice match: "+matches.get(0));
+        	speech_results.setMovementMethod(new ScrollingMovementMethod());
+        	speech_results.append("\n" + matches.get(0));
+			io.sendData(matches.get(0));
 
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    
+    
+	static String getKey(){
+		String key="";
+		//File f = new File("key.txt");
+		
+		if( client_identifier.equals("") ){
+			//Log.i("cliend id", "DOES NOT EXIST");
+			int random;
+			char randChar;
+			for(int i = 0; i < 124; i++){ //Generates random string
+				random = (int)(Math.random()*126);
+				if(random < 33) random = random + 33;
+				key = key+(char)(random);
+			}
+
+			//Log.i("the key", key);
+			
+		}
+		return key;
+
+	}
+    
+    
 }

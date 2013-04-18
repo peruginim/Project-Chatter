@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.TextView;
 
 
 public class ConnectToServer extends Thread{
@@ -19,6 +20,7 @@ public class ConnectToServer extends Thread{
 	boolean running=true;
 	String server;
 	int port;
+	String clientid;
 	
 	public void sendData(String string){
 		data=string;
@@ -29,24 +31,25 @@ public class ConnectToServer extends Thread{
 	}
 	
 	public ConnectToServer(){
-		server="moore07.cs.purdue.edu";
+		server="sslab10.cs.purdue.edu";
 		port=4444;
 	}
 	
-	public ConnectToServer(String serv, int port){
+	public ConnectToServer(String serv, int port, String clientid){
 		this.port=port;
 		server=serv;
+		this.clientid = clientid;
 	}
 	
     public void run() {
         
         // create socket connection
 		try {
-			Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port);
+			//Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
-			Log.i("HELLO","GOODBYE");
-			DOS = new DataOutputStream(socket.getOutputStream());;
+			//Log.i("HELLO","GOODBYE");
+			DOS = new DataOutputStream(socket.getOutputStream());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,7 +60,8 @@ public class ConnectToServer extends Thread{
 		
 		if (socket != null && DOS != null){
 			try {
-				DOS.writeBytes("Phone is connected!\n");
+				DOS.writeBytes(clientid+"\n");
+				
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");

@@ -56,11 +56,13 @@ public class Settings extends Activity implements OnClickListener {
 				// connect to server
 				String serv=directory.getText().toString();
 				int p=Integer.parseInt(port.getText().toString());
-				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p);
+				String clientid=pref.getString("client_id", "clientid");
+				
+				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
 				
 				// show the 'MainActivity' screen again
 				MainActivity.io.close();
-				MainActivity.io=new ConnectToServer(serv, p);
+				MainActivity.io=new ConnectToServer(serv, p, clientid);
 				MainActivity.io.start();
 				
 				Intent i = 	new Intent(this, MainActivity.class);
