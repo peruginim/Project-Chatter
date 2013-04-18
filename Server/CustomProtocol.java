@@ -1,4 +1,6 @@
 import java.io.*;
+import java.lang.*;
+
 
 public class CustomProtocol{
 	public String processInput(String input){
@@ -25,6 +27,35 @@ public class CustomProtocol{
 			}catch(Exception e){
 				return "Invalid parse: " + input;
 			}
+		}
+		/*
+		 * Checking or changin the status of the lights
+		 * Possible make these into some sort of method for easy modding?
+		 *
+		 */
+		if(input.matches("[^\t\n]*(l|Li|Ig|Gh|Ht|T)[^\n\t]*")) {
+			//THe user refrenced lights
+
+			if(input.matches("[^\n\t]*(a|Ar|Re|E)[^\n\t]*")) {
+				//Are the lights on or off?
+				if(input.matches("[^\n\t]*(o|On|N)[^\n\t]*")) {
+						
+				}else if (input.matches("[^\t\n]*(o|Of|Ff|F)[^\n\t]*")) {
+					
+				}
+				
+			}else if (input.matches("[^\t\n]*(t|Tu|Ur|Rn|N)|(m|Ma|Ak|Ke|E)[^\n\t]*")) {
+				//turn the lights on
+				if(input.matches("[^\n\t]*(o|On|N)[^\n\t]*")) {
+					return "I'm turning the lights ON!";	
+				}else if (input.matches("[^\t\n]*(o|Of|Ff|F)[^\n\t]*")) {
+					return "I'm turning the lights OFF!";
+				}
+				
+			}else {
+				//you mentioned the lights but waht about them?
+			}
+			
 		}
 
 		if(input.equals("exit") || input.equals("quit") || input.equals(":q")){
