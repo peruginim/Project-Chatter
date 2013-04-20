@@ -13,6 +13,10 @@ import android.widget.EditText;
 public class Settings extends Activity implements OnClickListener {
 
 	int content = R.layout.settings;
+	String serv;
+	int p;
+	String clientid;
+	static ConnectToServer io;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,8 +39,8 @@ public class Settings extends Activity implements OnClickListener {
 		EditText port = (EditText) findViewById(R.id.editPort);
 		
 		// set text of the text fields
-		directory.setText(pref.getString("Directory", "lore.cs.purdue.edu"));
-		port.setText(pref.getString("Port", "3459"));
+		directory.setText(pref.getString("Directory", "sslab10.cs.purdue.edu"));
+		port.setText(pref.getString("Port", "4444"));
 	}
 	
 	
@@ -61,13 +65,28 @@ public class Settings extends Activity implements OnClickListener {
 				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
 				
 				// show the 'MainActivity' screen again
-				MainActivity.io.close();
-				MainActivity.io=new ConnectToServer(serv, p, clientid);
-				MainActivity.io.start();
+		        if(io==null){
+		        	pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+		        	
+		            if(!pref.contains("client_id")){
+		            	pref.edit().putString("client_id", MainActivity.getKey()).commit();
+		            }
+		            
+		        	//Log.i("client id", pref.getString("client_id", "default"));
+		        	
+		        	serv=pref.getString("Directory", "sslab10.cs.purdue.edu");
+					p=Integer.parseInt(pref.getString("Port", "4444"));
+					clientid=pref.getString("client_id", "clientid");
+					
+		        	io=new ConnectToServer(serv, p, clientid);
+		        	io.start();
+		        	
+		        }
 				
 				Intent i = 	new Intent(this, MainActivity.class);
 				startActivity(i);
 				break;
+				
 			case R.id.button_back:
 				// send user back to home screen, don't save input
 				Intent j = new Intent(this, MainActivity.class);

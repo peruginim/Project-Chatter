@@ -23,18 +23,21 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-	static ConnectToServer io;
+	//static ConnectToServer io;
 	private static String client_identifier = "";
+	static TextView status;
+	static String connection_status = "Not connected to server";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		TextView status = (TextView)findViewById(R.id.connection_status);
+		status = (TextView)findViewById(R.id.connection_status);
 		status.setSelected(true);
 		status.setEllipsize(TruncateAt.MARQUEE);
 		status.setSingleLine(true);
+		status.setText(connection_status);
 		
         //setup Record button that goes to the record xml 
         View record = findViewById(R.id.button_record);
@@ -59,14 +62,10 @@ public class MainActivity extends Activity implements OnClickListener {
             //record.setText("Recognizer not present");
         }
         
+        /*
         //Log.i("DEBUG", "io: "+io);
         
-      
-        
-        
         if(io==null){
-        	
-        	
         	SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
         	
             if(!pref.contains("client_id")){
@@ -87,8 +86,9 @@ public class MainActivity extends Activity implements OnClickListener {
        // Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
  
         //io.sendData("Main activity has been created");
-        
+        */
 	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -141,7 +141,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	TextView speech_results = (TextView)findViewById(R.id.textView1);
         	speech_results.setMovementMethod(new ScrollingMovementMethod());
         	speech_results.append("\n" + matches.get(0));
-			io.sendData(matches.get(0));
+			Settings.io.sendData(matches.get(0));
 
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -50,6 +50,8 @@ public class ConnectToServer extends Thread{
 			socket.setKeepAlive(true);
 			//Log.i("HELLO","GOODBYE");
 			DOS = new DataOutputStream(socket.getOutputStream());
+			MainActivity.connection_status="Now connected to: "+server+"  on port: "+port;
+			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,6 +73,7 @@ public class ConnectToServer extends Thread{
 				}
 				DOS.close();
 				socket.close();
+				MainActivity.connection_status="No server connection!";
 			}
 			catch (UnknownHostException e) {
 				// TODO Auto-generated catch block

@@ -15,7 +15,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="Connection Status Goes Here... Connection Status Goes Here... Connection Status Goes Here..."
+        android:text="Not Connected to Server"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageButton
@@ -47,8 +47,8 @@
         android:background="#202020"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="20dp"
+        android:paddingTop="0dp"
         android:text="@string/welcome"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
 </LinearLayout>
