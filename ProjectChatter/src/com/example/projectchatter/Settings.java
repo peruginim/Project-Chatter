@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,7 +66,11 @@ public class Settings extends Activity implements OnClickListener {
 				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
 				
 				// show the 'MainActivity' screen again
-		        if(io==null){
+				MainActivity.io.close();
+				MainActivity.io=new ConnectToServer(serv, p, clientid);
+				MainActivity.io.start();
+				
+				/*if(io==null){
 		        	pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
 		        	
 		            if(!pref.contains("client_id")){
@@ -81,16 +86,18 @@ public class Settings extends Activity implements OnClickListener {
 		        	io=new ConnectToServer(serv, p, clientid);
 		        	io.start();
 		        	
-		        }
+		        }*/
 				
-				Intent i = 	new Intent(this, MainActivity.class);
-				startActivity(i);
+				//Intent i = 	new Intent(this, MainActivity.class);
+				//startActivity(i);
+		        finish();
 				break;
 				
 			case R.id.button_back:
 				// send user back to home screen, don't save input
-				Intent j = new Intent(this, MainActivity.class);
-				startActivity(j);
+				//Intent j = new Intent(this, MainActivity.class);
+				//startActivity(j);
+				finish();
 				break;
 			}
 	}	
