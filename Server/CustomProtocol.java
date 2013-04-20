@@ -1,5 +1,6 @@
 import java.io.*;
 import java.lang.*;
+import java.util.Scanner;
 
 
 public class CustomProtocol{
@@ -34,18 +35,22 @@ public class CustomProtocol{
 		 *
 		 */
 		if(input.matches("[^\t\n]*(l|Li|Ig|Gh|Ht|T)[^\n\t]*")) {
+			System.out.println("Something about lights?");
 			//THe user refrenced lights
 
 			if(input.matches("[^\n\t]*(a|Ar|Re|E)[^\n\t]*")) {
 				//Are the lights on or off?
+				System.out.println("Asking about?");
 				if(input.matches("[^\n\t]*(o|On|N)[^\n\t]*")) {
+					return "I'm not sure really...";
 						
 				}else if (input.matches("[^\t\n]*(o|Of|Ff|F)[^\n\t]*")) {
-					
+					return "Can't say.";
 				}
 				
-			}else if (input.matches("[^\t\n]*(t|Tu|Ur|Rn|N)|(m|Ma|Ak|Ke|E)[^\n\t]*")) {
+			}else if (input.matches("[^\t\n]*(t|Tu|Ur|Rn|N)[^\n\t]*")) {
 				//turn the lights on
+				System.out.println("changing the lights about?");
 				if(input.matches("[^\n\t]*(o|On|N)[^\n\t]*")) {
 					return "I'm turning the lights ON!";	
 				}else if (input.matches("[^\t\n]*(o|Of|Ff|F)[^\n\t]*")) {
@@ -68,6 +73,9 @@ public class CustomProtocol{
 		ChatterServerMain server = new ChatterServerMain();
 		try {
 			int port = 4444;
+			System.out.print("Run Server on port: ");
+			Scanner in = new Scanner(System.in);
+			port = in.nextInt();
 			server.startServer(port);
 		}catch (Exception e) {
 			System.out.print(e);
