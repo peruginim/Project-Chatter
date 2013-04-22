@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	static ConnectToServer io;
 	private static String client_identifier = "";
 	static TextView status;
-	static String connection_status = "Not connected to server";
+	static String connection_status = "Connect to a Server under Settings...";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

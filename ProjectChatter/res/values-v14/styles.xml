@@ -7,7 +7,7 @@
         
         Used to be android:Theme.Holo.Light.DarkActionBar
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.NoActionBar">
         <!-- API 14 theme customizations can go here. -->
     </style>
 
