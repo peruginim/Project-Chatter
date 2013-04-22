@@ -15,7 +15,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="Not Connected to Server"
+        android:text="Connect to a Server under Settings..."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageButton
