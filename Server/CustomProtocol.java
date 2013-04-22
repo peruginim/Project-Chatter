@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 
 public class CustomProtocol{
-	String usage = "\n\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\t<exit/quit/:q>: This will disconnect you from the server.\n\t<help>: Brings up the help menu.\n";
+	String usage = "\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\t<exit/quit/:q>: This will disconnect you from the server.\n\t<help>: Brings up the help menu.\n\t<connection>: Returns the address that you are connected to.";
+	
+	static ChatterServerMain server = new ChatterServerMain();
+	
 	public String processInput(String input){
 		
 
@@ -70,11 +73,14 @@ public class CustomProtocol{
 		if(input.equals("help")) {
 			return usage;
 		}
+		if(input.equals("connection")) {
+			return server.theToString();
+		}
 		return "Did not understand the command.";
 
 	}
 	public static void main(String args[]) {
-		ChatterServerMain server = new ChatterServerMain();
+		//ChatterServerMain server = new ChatterServerMain();
 		try {
 			int port = 4444;
 			System.out.print("Run Server on port: ");
