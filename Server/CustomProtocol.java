@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 
 public class CustomProtocol{
+	String usage = "\n\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\t<exit/quit/:q>: This will disconnect you from the server.\n\t<help>: Brings up the help menu.\n";
 	public String processInput(String input){
 		
 
@@ -65,6 +66,9 @@ public class CustomProtocol{
 
 		if(input.equals("exit") || input.equals("quit") || input.equals(":q")){
 			return("Goodbye.");
+		}
+		if(input.equals("help")) {
+			return usage;
 		}
 		return "Did not understand the command.";
 
