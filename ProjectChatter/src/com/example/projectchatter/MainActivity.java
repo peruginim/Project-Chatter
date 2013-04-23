@@ -12,6 +12,8 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -19,14 +21,19 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity<MyTextToSpeech> extends Activity implements OnClickListener, OnInitListener {
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	static ConnectToServer io;
 	private static String client_identifier = "";
 	static TextView status;
 	static String connection_status = "Connect to a Server under Settings...";
+	
+	//** global variables for TTS
+    private int MY_DATA_CHECK_CODE = 0;
+    private TextToSpeech tts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +81,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			// Log.i("client id", pref.getString("client_id", "default"));
 
-			String serv = pref.getString("Directory", "data.cs.purdue.edu");
-			int p = Integer.parseInt(pref.getString("Port", "3456"));
+			String serv = pref.getString("Directory", "sslab10.cs.purdue.edu");
+			int p = Integer.parseInt(pref.getString("Port", "4444"));
 			String clientid = pref.getString("client_id", "clientid");
 
 			io = new ConnectToServer(serv, p, clientid);
@@ -86,7 +93,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
 
-
+		//** TTS 
+        Intent checkIntent = new Intent();
+        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 	}
 
 	@Override
@@ -145,6 +155,21 @@ public class MainActivity extends Activity implements OnClickListener {
 			io.sendData(matches.get(0));
 
 		}
+		
+		//** TTS
+	    if (requestCode == MY_DATA_CHECK_CODE) {
+	        if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+	            // success, create the TTS instance
+	            tts = new TextToSpeech(this, this);
+	        }
+	        else {
+	            // missing data, install it
+	            Intent installIntent = new Intent();
+	            installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+	            startActivity(installIntent);
+	        }
+	     }
+		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -155,7 +180,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (client_identifier.equals("")) {
 			// Log.i("cliend id", "DOES NOT EXIST");
 			int random;
-			char randChar;
 			for (int i = 0; i < 124; i++) { // Generates random string
 				random = (int) (Math.random() * 126);
 				if (random < 33)
@@ -167,7 +191,24 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		}
 		return key;
-
 	}
 
+	public void sayString(String speak){
+		//String text = inputText.getText().toString();
+        if (speak!=null && speak.length()>0) {
+         Toast.makeText(MainActivity.this, "Saying: " + speak, Toast.LENGTH_LONG).show();
+         tts.speak(speak, TextToSpeech.QUEUE_ADD, null);
+        }		
+	}
+
+	public void onInit(int status) {       
+	      if (status == TextToSpeech.SUCCESS) {
+	        Toast.makeText(MainActivity.this, "Text-To-Speech engine is initialized", Toast.LENGTH_LONG).show();
+	      }
+	      else if (status == TextToSpeech.ERROR) {
+	        Toast.makeText(MainActivity.this, "Error occurred while initializing Text-To-Speech engine", Toast.LENGTH_LONG).show();
+	      }
+	}
+	
+	
 }
