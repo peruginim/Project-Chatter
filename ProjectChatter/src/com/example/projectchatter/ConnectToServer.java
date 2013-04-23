@@ -16,6 +16,7 @@ public class ConnectToServer extends Thread{
 	int content = R.layout.settings;
 	Socket socket;
 	DataOutputStream DOS;
+	DataInputStream DIS;
 	String data="";
 	boolean running=true;
 	String server;
@@ -50,7 +51,10 @@ public class ConnectToServer extends Thread{
 			socket.setKeepAlive(true);
 			//Log.i("HELLO","GOODBYE");
 			DOS = new DataOutputStream(socket.getOutputStream());
+			DIS = new DataInputStream(socket.getInputStream());
+			
 			MainActivity.connection_status="Now connected to: "+server+"  on port: "+port;
+			
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -61,7 +65,10 @@ public class ConnectToServer extends Thread{
 		}
 		
 		if (socket != null && DOS != null){
+			StringBuilder build=new StringBuilder();
+			int c;
 			try {
+				socket.setSoTimeout(7000);
 				DOS.writeBytes(clientid+"\n");
 				
 				while(running){
@@ -69,19 +76,33 @@ public class ConnectToServer extends Thread{
 						DOS.writeBytes(data+"\n");
 						//DOS.flush();
 						data="";
+						
+						build.delete(0, build.capacity());
+						build.trimToSize();
+						build.ensureCapacity(20);
+						
+						while((c=DIS.read())!=0){
+							build.append((char)c);
+						}
+						
+						Log.i("READIN","THE STRING READ IN IS: "+build.toString());
+						
+						MainActivity.speech_results.append(build.toString()+"\n");
 					}
 				}
+				
 				DOS.close();
 				socket.close();
 				MainActivity.connection_status="No server connection!";
-			}
-			catch (UnknownHostException e) {
+			} catch (Exception e){
+				e.printStackTrace();
+			}/*catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			
 		}
 		

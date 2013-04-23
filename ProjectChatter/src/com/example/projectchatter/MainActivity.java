@@ -30,7 +30,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	private static String client_identifier = "";
 	static TextView status;
 	static String connection_status = "Connect to a Server under Settings...";
-	
+	static TextView speech_results;
 	//** global variables for TTS
     private int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech tts;
@@ -55,6 +55,8 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		View settings = findViewById(R.id.button_settings);
 		settings.setBackgroundColor(Color.TRANSPARENT);
 		settings.setOnClickListener(this);
+		
+		speech_results = (TextView) findViewById(R.id.textView1);
 
 		// TextView speech_results = (TextView)findViewById(R.id.textView1);
 		// speech_results.setMovementMethod(new ScrollingMovementMethod());
@@ -149,10 +151,11 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
 			// Set textfield to first result
-			TextView speech_results = (TextView) findViewById(R.id.textView1);
+		
 			speech_results.setMovementMethod(new ScrollingMovementMethod());
 			speech_results.append("\n" + matches.get(0));
 			io.sendData(matches.get(0));
+			sayString(matches.get(0));
 
 		}
 		
@@ -196,7 +199,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	public void sayString(String speak){
 		//String text = inputText.getText().toString();
         if (speak!=null && speak.length()>0) {
-         Toast.makeText(MainActivity.this, "Saying: " + speak, Toast.LENGTH_LONG).show();
+         //Toast.makeText(MainActivity.this, "Saying: " + speak, Toast.LENGTH_LONG).show();
          tts.speak(speak, TextToSpeech.QUEUE_ADD, null);
         }		
 	}
