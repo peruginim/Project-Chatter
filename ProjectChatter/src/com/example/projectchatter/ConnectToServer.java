@@ -18,6 +18,7 @@ public class ConnectToServer extends Thread{
 	DataOutputStream DOS;
 	DataInputStream DIS;
 	String data="";
+	String outData="";
 	boolean running=true;
 	String server;
 	int port;
@@ -25,6 +26,9 @@ public class ConnectToServer extends Thread{
 	
 	public void sendData(String string){
 		data=string;
+	}
+	public String getResult(){
+		return outData;
 	}
 	
 	public void close(){
@@ -71,6 +75,11 @@ public class ConnectToServer extends Thread{
 				socket.setSoTimeout(7000);
 				DOS.writeBytes(clientid+"\n");
 				
+				while((c=DIS.read())!=0){
+					build.append((char)c);
+				}
+				outData=build.toString();
+				
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");
@@ -87,7 +96,7 @@ public class ConnectToServer extends Thread{
 						
 						Log.i("READIN","THE STRING READ IN IS: "+build.toString());
 						
-						MainActivity.speech_results.append(build.toString()+"\n");
+						outData=build.toString();
 					}
 				}
 				
@@ -95,6 +104,7 @@ public class ConnectToServer extends Thread{
 				socket.close();
 				MainActivity.connection_status="No server connection!";
 			} catch (Exception e){
+				Log.i("POOPHERE","NOPOOP");
 				e.printStackTrace();
 			}/*catch (UnknownHostException e) {
 				// TODO Auto-generated catch block

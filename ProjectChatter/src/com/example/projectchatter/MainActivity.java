@@ -90,7 +90,11 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			io = new ConnectToServer(serv, p, clientid);
 			io.start();
 			
-			io.sendData("Hello Server");
+			//io.sendData("Hello Server");
+			String temp="";
+			while((temp=io.getResult()).equals(""));
+			speech_results.append("\n"+temp);
+			
 		}
 
 		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
@@ -155,7 +159,12 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			speech_results.setMovementMethod(new ScrollingMovementMethod());
 			speech_results.append("\n" + matches.get(0));
 			io.sendData(matches.get(0));
-			sayString(matches.get(0));
+			
+			String temp="";
+			while((temp=io.getResult()).equals(""));
+			speech_results.append("\n"+temp);
+			
+			sayString(temp);
 
 		}
 		
@@ -212,6 +221,5 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	        Toast.makeText(MainActivity.this, "Error occurred while initializing Text-To-Speech engine", Toast.LENGTH_LONG).show();
 	      }
 	}
-	
 	
 }
