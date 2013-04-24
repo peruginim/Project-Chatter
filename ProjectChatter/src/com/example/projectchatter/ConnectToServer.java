@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
@@ -20,6 +21,7 @@ public class ConnectToServer extends Thread{
 	String data="";
 	String outData="";
 	boolean running=true;
+	boolean isconnected=false;
 	String server;
 	int port;
 	String clientid;
@@ -53,6 +55,7 @@ public class ConnectToServer extends Thread{
         
         // create socket connection
 		try {
+			isconnected=true;
 			//Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
@@ -60,22 +63,29 @@ public class ConnectToServer extends Thread{
 			DOS = new DataOutputStream(socket.getOutputStream());
 			DIS = new DataInputStream(socket.getInputStream());
 			
+			
+			
 			MainActivity.connection_status="Now connected to: "+server+"  on port: "+port;
 			
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			isconnected=false;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			isconnected=false;
+		} catch (Exception e){
+			isconnected=false;
 		}
 		
 		if (socket != null && DOS != null){
 			StringBuilder build=new StringBuilder();
 			int c;
 			try {
-				socket.setSoTimeout(7000);
+				socket.setSoTimeout(1000);
 				DOS.writeBytes(clientid+"\n");
 				
 				//Thread.sleep(5000);
@@ -95,8 +105,17 @@ public class ConnectToServer extends Thread{
 						build.trimToSize();
 						build.ensureCapacity(20);
 						
+						try{
 						while((c=DIS.read())!=0){
+							if(c==-1){
+								outData="Disconnected from server";
+								isconnected=false;
+								break;
+							}
 							build.append((char)c);
+						}
+						}catch(SocketTimeoutException e){
+							outData="nope";
 						}
 						
 						outData=build.toString();

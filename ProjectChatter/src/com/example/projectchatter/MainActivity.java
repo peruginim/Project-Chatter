@@ -92,7 +92,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			
 			//io.sendData("Hello Server");
 			String temp="";
-			while(temp.equals("")){
+			while(io.isconnected && temp.equals("")){
 					temp=io.getResult();
 			}
 			//Log.i("TEMP EQUALS", temp);
@@ -110,6 +110,13 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+	}
+	
+	@Override
+	public void onResume(){
+		String temp="";
+		while (io.isconnected && (temp=io.getResult()).equals(""));
+		speech_results.append(temp);
 	}
 
 	@Override
@@ -168,7 +175,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			io.sendData(matches.get(0));
 			
 			String temp="";
-			while((temp=io.getResult()).equals(""));
+			while(io.isconnected && (temp=io.getResult()).equals(""));
 			speech_results.append("\nServer:"+temp);
 			
 			sayString(temp);
