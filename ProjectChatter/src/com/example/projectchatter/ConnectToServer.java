@@ -24,6 +24,7 @@ public class ConnectToServer extends Thread{
 	boolean isconnected=false;
 	String server;
 	int port;
+	
 	String clientid;
 	
 	public void sendData(String string){
@@ -37,6 +38,7 @@ public class ConnectToServer extends Thread{
 	}
 	
 	public void close(){
+		isconnected=false;
 		running=false;
 	}
 	
@@ -65,7 +67,7 @@ public class ConnectToServer extends Thread{
 			
 			
 			
-			MainActivity.connection_status="Now connected to: "+server+"  on port: "+port;
+			MainActivity.status.setText("Now connected to: "+server+"  on port: "+port);
 			
 			
 		} catch (UnknownHostException e) {
@@ -94,11 +96,12 @@ public class ConnectToServer extends Thread{
 					build.append((char)c);
 				}
 				outData=build.toString();
+				this.notifyAll();
 				
 				while(running){
 					if(!data.equals("")){
 						DOS.writeBytes(data+"\n");
-						//DOS.flush();
+						DOS.flush();
 						data="";
 						
 						build.delete(0, build.capacity());
@@ -110,10 +113,13 @@ public class ConnectToServer extends Thread{
 							if(c==-1){
 								outData="Disconnected from server";
 								isconnected=false;
-								break;
+								running=false;
 							}
 							build.append((char)c);
+							this.notifyAll();
+							
 						}
+						
 						}catch(SocketTimeoutException e){
 							outData="nope";
 						}
@@ -127,6 +133,7 @@ public class ConnectToServer extends Thread{
 				
 				DOS.close();
 				socket.close();
+				isconnected=false;
 				MainActivity.connection_status="No server connection!";
 			} catch (Exception e){
 				Log.i("POOPHERE","NOPOOP");

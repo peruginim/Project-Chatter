@@ -69,6 +69,7 @@ public class Settings extends Activity implements OnClickListener {
 				MainActivity.io.close();
 				MainActivity.io=new ConnectToServer(serv, p, clientid);
 				MainActivity.io.start();
+				MainActivity.backwithoutsaving=false;
 				
 				/*if(io==null){
 		        	pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
@@ -97,6 +98,7 @@ public class Settings extends Activity implements OnClickListener {
 				// send user back to home screen, don't save input
 				//Intent j = new Intent(this, MainActivity.class);
 				//startActivity(j);
+				MainActivity.backwithoutsaving=true;
 				finish();
 				break;
 			}

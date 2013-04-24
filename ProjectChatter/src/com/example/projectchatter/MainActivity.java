@@ -34,6 +34,9 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	//** global variables for TTS
     private int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech tts;
+    
+    static boolean backwithoutsaving = false;
+    //private boolean resumeHasRun = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +74,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			// record.setText("Recognizer not present");
 		}
 
-		// Log.i("DEBUG", "io: "+io);
-
 		if (io == null) {
 			SharedPreferences pref = getSharedPreferences("serverPrefs",
 					Context.MODE_PRIVATE);
@@ -91,18 +92,25 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			io.start();
 			
 			//io.sendData("Hello Server");
+			
 			String temp="";
-			while(io.isconnected && temp.equals("")){
-					temp=io.getResult();
+			try {
+				io.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			if(io.isconnected)temp=io.getResult();
+			
 			//Log.i("TEMP EQUALS", temp);
 			
 			speech_results.append("\nServer:"+temp);
+			
 			//sayString(temp);
 			
 		}
 		
-		
+		//isCreated = true;
 
 		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
 
@@ -113,10 +121,22 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	}
 	
 	@Override
-	public void onResume(){
+	public void onRestart(){
+		super.onRestart();
 		String temp="";
-		while (io.isconnected && (temp=io.getResult()).equals(""));
-		speech_results.append(temp);
+		if(!backwithoutsaving){
+			try {
+				io.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(io.isconnected)speech_results.append(io.getResult());
+		}
+		//Log.i("TEMP EQUALS", temp);
+		
+		speech_results.append("\nServer:"+temp);
+
 	}
 
 	@Override
@@ -174,11 +194,20 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			speech_results.append("\n" + matches.get(0));
 			io.sendData(matches.get(0));
 			
-			String temp="";
-			while(io.isconnected && (temp=io.getResult()).equals(""));
-			speech_results.append("\nServer:"+temp);
+			try {
+				io.join(10000);
+				String temp="";
+				//if(io.isconnected && (temp=io.getResult()).equals(""));
+				if(io.isconnected)temp=io.getResult();
+				speech_results.append("\nresServer:"+temp);
+				sayString(temp);
+
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				Log.i("apsodifjpaoidfj","aoijsdfpasiodfj");
+				e.printStackTrace();
+			}
 			
-			sayString(temp);
 
 		}
 		
@@ -195,8 +224,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	            startActivity(installIntent);
 	        }
 	     }
-		
-		super.onActivityResult(requestCode, resultCode, data);
+		 super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	static String getKey() {
