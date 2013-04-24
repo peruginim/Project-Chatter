@@ -36,7 +36,11 @@ public class ChatterServer extends Thread{
 		//}
 	
 	}
-
+	/*
+	confirm()
+		Allows the server to dictate whether it will allow a fresh connection. It also saves the key 
+		for future reference.
+	*/
 	private boolean confirm(){
 		Scanner in = new Scanner(System.in);
 		System.out.println("Do you want to allow " + socket.getInetAddress() + " to connect? (y/n)");
@@ -44,6 +48,7 @@ public class ChatterServer extends Thread{
 		if(line.equals("y"))return true;
 		else return false;
 	}
+	
 	public void run(){
 
 		try{

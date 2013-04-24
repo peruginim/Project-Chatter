@@ -4,13 +4,18 @@ import java.util.Scanner;
 
 
 public class CustomProtocol{
-	String usage = "\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\t<exit/quit/:q>: This will disconnect you from the server.\n\t<help>: Brings up the help menu.\n\t<connection>: Returns the address that you are connected to.";
+	String usage = "\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\texit or quit\tThis will disconnect you from the server.\n\thelp\tBrings up the help menu.\n\tconnection\tReturns the address that you are connected to.";
 	
 	static ChatterServerMain server = new ChatterServerMain();
-	
+	/*
+	processInput(String input):
+		Takes input from the app and will send an appropriate response and/or complete an appropriate 
+		action.
+		Add your own ifs for cool things! Use the current examples to make your own! Regex is useful!
+		http://lmgtfy.com/?q=java+regex
+	*/	
 	public String processInput(String input){
 		
-
 		if(input==null){
 			return "Hello, you are chattin with chatter!";
 		}
@@ -40,7 +45,7 @@ public class CustomProtocol{
 		 */
 		if(input.matches("[^\t\n]*(light)[^\n\t]*")) {
 			System.out.println("Something about lights?");
-			//THe user refrenced lights
+			//The user refrenced lights
 
 			if(input.matches("[^\n\t]*(are)[^\n\t]*")) {
 				//Are the lights on or off?
@@ -80,7 +85,6 @@ public class CustomProtocol{
 
 	}
 	public static void main(String args[]) {
-		//ChatterServerMain server = new ChatterServerMain();
 		try {
 			int port = 4444;
 			System.out.print("Run Server on port: ");
