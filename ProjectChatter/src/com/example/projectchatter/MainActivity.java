@@ -111,6 +111,13 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 	}
+	
+	@Override
+	public void onResume(){
+		String temp="";
+		while (io.isconnected && (temp=io.getResult()).equals(""));
+		speech_results.append(temp);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
