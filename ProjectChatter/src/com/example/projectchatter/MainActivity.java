@@ -92,10 +92,17 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			
 			//io.sendData("Hello Server");
 			String temp="";
-			while((temp=io.getResult()).equals(""));
-			speech_results.append("\n"+temp);
+			while(temp.equals("")){
+					temp=io.getResult();
+			}
+			//Log.i("TEMP EQUALS", temp);
+			
+			speech_results.append("\nServer:"+temp);
+			//sayString(temp);
 			
 		}
+		
+		
 
 		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
 
@@ -162,7 +169,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			
 			String temp="";
 			while((temp=io.getResult()).equals(""));
-			speech_results.append("\n"+temp);
+			speech_results.append("\nServer:"+temp);
 			
 			sayString(temp);
 

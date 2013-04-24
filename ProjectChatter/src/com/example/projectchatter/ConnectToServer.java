@@ -28,7 +28,10 @@ public class ConnectToServer extends Thread{
 		data=string;
 	}
 	public String getResult(){
-		return outData;
+		String temp="";
+		temp=outData;
+		outData="";
+		return temp;
 	}
 	
 	public void close(){
@@ -75,6 +78,8 @@ public class ConnectToServer extends Thread{
 				socket.setSoTimeout(7000);
 				DOS.writeBytes(clientid+"\n");
 				
+				//Thread.sleep(5000);
+				
 				while((c=DIS.read())!=0){
 					build.append((char)c);
 				}
@@ -94,9 +99,10 @@ public class ConnectToServer extends Thread{
 							build.append((char)c);
 						}
 						
-						Log.i("READIN","THE STRING READ IN IS: "+build.toString());
-						
 						outData=build.toString();
+						Log.i("READIN","THE STRING READ IN IS: "+outData);
+						
+						
 					}
 				}
 				
