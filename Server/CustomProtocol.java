@@ -47,7 +47,7 @@ public class CustomProtocol{
 			System.out.println("Something about lights?");
 			//The user refrenced lights
 
-			if(input.matches("[^\n\t]*(are)[^\n\t]*")) {
+			if(input.matches("[^\n\t]*(are)|(is)[^\n\t]*")) {
 				//Are the lights on or off?
 				System.out.println("Asking about?");
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
