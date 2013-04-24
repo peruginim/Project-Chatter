@@ -4,7 +4,7 @@
 #Java Compliler and Flags
 JFLAGS = -g
 JC = javac
-JLIB = Chatter.jar
+JLIB = Chatter.jar RXTXcomm.jar
 
 CLASSES = \
 	CustomProtocol.java
