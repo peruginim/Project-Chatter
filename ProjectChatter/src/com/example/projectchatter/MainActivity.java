@@ -92,7 +92,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			
 			//io.sendData("Hello Server");
 			String temp="";
-			while(temp.equals("")){
+			while(io.isconnected && temp.equals("")){
 					temp=io.getResult();
 			}
 			//Log.i("TEMP EQUALS", temp);
@@ -168,7 +168,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			io.sendData(matches.get(0));
 			
 			String temp="";
-			while((temp=io.getResult()).equals(""));
+			while(io.isconnected && (temp=io.getResult()).equals(""));
 			speech_results.append("\nServer:"+temp);
 			
 			sayString(temp);
