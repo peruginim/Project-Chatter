@@ -25,14 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Settings"
-            android:screenOrientation="portrait"
-        	android:configChanges="keyboardHidden|orientation"
-            android:label="Settings">
-        </activity>
-        <activity android:name=".RecordVoice"
-            android:label="RecordVoice">
-        </activity>
+        <activity android:name="MainActivity$Settings"></activity>
     </application>
 
 </manifest>

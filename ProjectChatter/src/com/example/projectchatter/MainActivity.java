@@ -44,7 +44,10 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
     private TextToSpeech tts;
     
     // ConnectToServer global variable
-    public ConnectToServer io;
+    public static ConnectToServer io;
+	//SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+	//final String SERVER = pref.getString("Directory", "sslab10.cs.purdue.edu");
+	//final int PORT = Integer.parseInt(pref.getString("Port", "5555"));
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -223,15 +226,15 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	 *  
 	 *  
 	 */
-	public class ConnectToServer extends AsyncTask<String, Integer, String> {
+	public static class ConnectToServer extends AsyncTask<String, Integer, String> {
 		Socket socket;
 		DataOutputStream DOS;
 		DataInputStream DIS;
 		boolean isConnected = false;
 		
-		SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-		final String SERVER = pref.getString("Directory", "sslab10.cs.purdue.edu");
-		final int PORT = Integer.parseInt(pref.getString("Port", "5555"));
+		//SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+		//final String SERVER = pref.getString("Directory", "sslab10.cs.purdue.edu");
+		//final int PORT = Integer.parseInt(pref.getString("Port", "5555"));
 		
 		
 		@Override
@@ -245,7 +248,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		protected String doInBackground(String... params) {
 			//Log.i("ASYNC HERE I COME", "I AM COMING");
 			try {
-				socket = new Socket(SERVER, PORT);
+				socket = new Socket("sslab10.cs.purdue.edu", 5555);
 				socket.setKeepAlive(true);
 				DOS = new DataOutputStream(socket.getOutputStream());
 				DIS = new DataInputStream(socket.getInputStream());
@@ -274,7 +277,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (isConnected){
-				marquee.setText("Chatting with server "+SERVER+" on port "+PORT);
+				marquee.setText("Chatting with server "+"sslab10.cs.purdue.edu"+" on port "+5555);
 			}
 			else{
 				marquee.setText("No server connection!");
@@ -291,8 +294,8 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	 *  
 	 *  
 	 */
-	public class Settings extends Activity implements OnClickListener {
-
+	public static class Settings extends Activity implements OnClickListener {
+			
 		int content = R.layout.settings;
 		String serv;
 		int p;
@@ -300,30 +303,31 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			
+			setContentView(R.layout.settings);
+				
 			// show the 'Settings' screen
 			setContentView(content);
-			
+				
 			// set up click listener for the save button
 			View save = findViewById(R.id.button_connect);
 			save.setOnClickListener(this);
-			
+				
 			View back = findViewById(R.id.button_back);
 			back.setOnClickListener(this);
-			
+				
 			// save persistent application data in SharedPreferences structure
 			SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
 
 			// create edit-able text fields
 			EditText directory = (EditText) findViewById(R.id.editDirectory);
 			EditText port = (EditText) findViewById(R.id.editPort);
-			
+				
 			// set text of the text fields
 			directory.setText(pref.getString("Directory", "sslab10.cs.purdue.edu"));
 			port.setText(pref.getString("Port", "5555"));
 		}
-		
-		
+			
+			
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
@@ -331,24 +335,24 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 					// create edit-able text fields
 					EditText directory = (EditText) findViewById(R.id.editDirectory);
 					EditText port = (EditText) findViewById(R.id.editPort);
-				
+					
 					// save the strings from the text fields
 					SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
 					if(directory.getText().toString().length() != 0) pref.edit().putString("Directory", directory.getText().toString()).commit();
 					if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
-				
+					
 					// connect to server
 					String serv=directory.getText().toString();
 					int p=Integer.parseInt(port.getText().toString());
 					String clientid=pref.getString("client_id", "clientid");
-					
+						
 					Log.i("strings from settings", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
-					
-					//io = (ConnectToServer) new ConnectToServer().execute();
+						
+					io = (ConnectToServer) new ConnectToServer().execute();
 
-			        finish();
+				    finish();
 					break;
-					
+						
 				case R.id.button_back:
 					// send user back to home screen, don't save input
 					finish();
@@ -357,7 +361,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		}	
 
 	}
-	
 	
 	
 	

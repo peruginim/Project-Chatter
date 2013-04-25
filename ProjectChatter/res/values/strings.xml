@@ -12,7 +12,7 @@
     <string name="server_directory">Server Directory</string>
     <string name = "app_name_launcher">Chatter</string>
     <string name="port">Port</string>
-    <string name="settings_directory_default">sslab20.cs.purdue.edu</string>
+    <string name="settings_directory_default">sslab10.cs.purdue.edu</string>
     <string name="settings">Settings</string><string name="desc">String</string>
     
 
