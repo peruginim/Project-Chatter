@@ -17,7 +17,6 @@ public class Settings extends Activity implements OnClickListener {
 	String serv;
 	int p;
 	String clientid;
-	static ConnectToServer io;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,7 +40,7 @@ public class Settings extends Activity implements OnClickListener {
 		
 		// set text of the text fields
 		directory.setText(pref.getString("Directory", "sslab10.cs.purdue.edu"));
-		port.setText(pref.getString("Port", "4444"));
+		port.setText(pref.getString("Port", "5555"));
 	}
 	
 	
@@ -63,12 +62,12 @@ public class Settings extends Activity implements OnClickListener {
 				int p=Integer.parseInt(port.getText().toString());
 				String clientid=pref.getString("client_id", "clientid");
 				
-				Log.i("NEW CONNECT TO", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
+				Log.i("strings from settings", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
 				
 				// show the 'MainActivity' screen again
-				MainActivity.io.close();
-				MainActivity.io=new ConnectToServer(serv, p, clientid);
-				MainActivity.io.start();
+				//MainActivity.io.close();
+				//MainActivity.io=new ConnectToServer(serv, p, clientid);
+				//MainActivity.io.start();
 
 		        finish();
 				break;

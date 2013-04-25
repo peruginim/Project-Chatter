@@ -1,5 +1,11 @@
 package com.example.projectchatter;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -26,10 +33,11 @@ import android.widget.Toast;
 public class MainActivity<MyTextToSpeech> extends Activity implements OnClickListener, OnInitListener {
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-	static ConnectToServer io;
-	static TextView status;
-	static String connection_status = "Connect to a Server under Settings...";
+	//static ConnectToServer io;
+	static TextView marquee;
+	static String connection_status = "Connect to a server through Settings screen...";
 	static TextView speech_results;
+	
 	//** global variables for TTS
     private int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech tts;
@@ -39,11 +47,11 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		status = (TextView) findViewById(R.id.connection_status);
-		status.setSelected(true);
-		status.setEllipsize(TruncateAt.MARQUEE);
-		status.setSingleLine(true);
-		status.setText(connection_status);
+		marquee = (TextView) findViewById(R.id.connection_status);
+		marquee.setSelected(true);
+		marquee.setEllipsize(TruncateAt.MARQUEE);
+		marquee.setSingleLine(true);
+		marquee.setText(connection_status);
 
 		// setup Record button that goes to the record xml
 		View record = findViewById(R.id.button_record);
@@ -57,9 +65,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		
 		speech_results = (TextView) findViewById(R.id.textView1);
 
-		// TextView speech_results = (TextView)findViewById(R.id.textView1);
-		// speech_results.setMovementMethod(new ScrollingMovementMethod());
-
 		PackageManager pm = getPackageManager();
 		List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(
 				RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
@@ -67,46 +72,18 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			record.setOnClickListener(this);
 		} else {
 			record.setEnabled(false);
-			// record.setText("Recognizer not present");
 		}
 
-		// Log.i("DEBUG", "io: "+io);
-
-		if (io == null) {
-			SharedPreferences pref = getSharedPreferences("serverPrefs",
-					Context.MODE_PRIVATE);
-
-			if (!pref.contains("client_id")) {
-				pref.edit().putString("client_id", getKey()).commit();
-			}
-
-			// Log.i("client id", pref.getString("client_id", "default"));
-
-			String serv = pref.getString("Directory", "sslab10.cs.purdue.edu");
-			int p = Integer.parseInt(pref.getString("Port", "4444"));
-			String clientid = pref.getString("client_id", "clientid");
-
-			io = new ConnectToServer(serv, p, clientid);
-			io.start();
-			
-			//io.sendData("Hello Server");
-			String temp="";
-			while(io.isconnected && temp.equals("")){
-					temp=io.getResult();
-			}
-			//Log.i("TEMP EQUALS", temp);
-			
-			speech_results.append("\nServer:"+temp);
-			//sayString(temp);
-			
-		}
-	
-		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
-
-		//** TTS 
+		// initialize text to speech
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
+
+
+        // create async ConnectToServer object
+        new ConnectToServer().execute();
+        
+        
 	}
 	
 	
@@ -140,7 +117,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	
 			// if settings button pressed, open settings screen
 			case R.id.button_settings:
-				io.sendData("You hit the settings button");
+				//io.sendData("You hit the settings button");
 				Intent i2 = new Intent(this, Settings.class);
 				startActivity(i2);
 				break;
@@ -172,16 +149,16 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			// Set textfield to first result
 			speech_results.setMovementMethod(new ScrollingMovementMethod());
 			speech_results.append("\n" + matches.get(0));
-			io.sendData(matches.get(0));
+			//io.sendData(matches.get(0));
 			
 			String temp="";
-			while(io.isconnected && (temp=io.getResult()).equals(""));
-			speech_results.append("\nServer:"+temp);
+			//while(io.isconnected && (temp=io.getResult()).equals(""));
+			//speech_results.append("\nServer:"+temp);
 			
 			sayString(temp);
 		}
 		
-		//** TTS
+		//** text to speech activity result
 	    if (requestCode == MY_DATA_CHECK_CODE) {
 	        if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
 	            // success, create the TTS instance
@@ -201,9 +178,9 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 
 	static String getKey() {
 		String key = "";
-		// Log.i("client id", "DOES NOT EXIST");
 		int random;
-		for (int i = 0; i < 124; i++) { // Generates random string
+		
+		for (int i = 0; i < 124; i++) {
 			random = (int) (Math.random() * 126);
 			if (random < 33)
 				random = random + 33;
@@ -230,5 +207,75 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	        Toast.makeText(MainActivity.this, "Error occurred while initializing Text-To-Speech engine", Toast.LENGTH_SHORT).show();
 	      }
 	}
+	
+	
+	/*
+	 * 
+	 * AsyncTask class to connect to server
+	 *  
+	 *  
+	 */
+	private class ConnectToServer extends AsyncTask<String, Integer, String> {
+		Socket socket;
+		DataOutputStream DOS;
+		DataInputStream DIS;
+		boolean isConnected = false;
+		
+		SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+		final String SERVER = pref.getString("Directory", "sslab10.cs.purdue.edu");
+		final int PORT = Integer.parseInt(pref.getString("Port", "5555"));
+		
+		
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		    //displayProgressBar("Downloading...");
+		}
+		 
+		   
+		    
+		@Override
+		protected String doInBackground(String... params) {
+			Log.i("ASYNC HERE I COME", "I AM COMING");
+			
+			try {
+				socket = new Socket(SERVER, PORT);
+				socket.setKeepAlive(true);
+				DOS = new DataOutputStream(socket.getOutputStream());
+				DIS = new DataInputStream(socket.getInputStream());
+				isConnected = true;
+				
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Log.i("conneted to: ", "server "+SERVER+" on port "+PORT);
+			
+			return "All Done!";
+		}
+		 
+		   
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			super.onProgressUpdate(values);
+		}
+			 
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (isConnected){
+				marquee.setText("Chatting with server "+SERVER+" on port "+PORT);
+			}
+			else{
+				marquee.setText("No server connection!");
+			}
+		}
+	}
+	
+
 	
 }
