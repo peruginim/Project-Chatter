@@ -39,6 +39,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	static TextView marquee;
 	static String connection_status = "Connect to a server through Settings screen...";
 	static TextView speech_results;
+	boolean onResumeCalled = false;
 	
 	// global variables for text to speech
     private int MY_DATA_CHECK_CODE = 0;
@@ -51,6 +52,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	static String server_string;
 	static int port_number;
 	static String client_identification="";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +99,18 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	}
 	
 	
-	/*
+
 	@Override
 	public void onResume(){
-		String temp="";
-		while (io.isconnected && (temp=io.getResult()).equals(""));
-		speech_results.append(temp);
+		super.onResume();
+		
+		marquee.setText(connection_status);
+		//String temp="";
+		//while (io.isconnected && (temp=io.getResult()).equals(""));
+		//speech_results.append(temp);
+		onResumeCalled = true;
 	}
-	 */	
+	
 	
 	
 	@Override
@@ -235,12 +241,11 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	 *  
 	 */
 	public static class ConnectToServer extends AsyncTask<String, Integer, String> {
-		Socket socket;
 		DataOutputStream DOS;
 		DataInputStream DIS;
 		boolean isConnected = false;
 		String outData, inData;
-		
+		Socket socket;
 
 		@Override
 		protected void onPreExecute() {
@@ -257,18 +262,26 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 				socket.setKeepAlive(true);
 				DOS = new DataOutputStream(socket.getOutputStream());
 				DIS = new DataInputStream(socket.getInputStream());
-				isConnected = true;
+
+				isConnected = socket.isConnected();
+				if (isConnected) connection_status = ">>>Chatting with server "+server_string+" on port "+port_number;
+				else connection_status = ">>>No server connection!";
+				//Log.i("connection status from do in background", connection_status);
+				//Log.i("isConnected:", "equals "+isConnected);
 				
 				DOS.writeBytes(client_identification+"\n");
 				
 				while(isConnected){
 						Thread.sleep(4000);
+						
 						DOS.writeBytes(latest_command+"\n");
 						latest_command="";
-											
+						
+						
 					
 				}
 				
+				isConnected = false;
 				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
@@ -300,10 +313,12 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 			if (isConnected){
-				marquee.setText("Chatting with server "+server_string+" on port "+port_number);
+				connection_status = "Chatting with server "+server_string+" on port "+port_number;;
+				//Log.i("connection status from on post execute", connection_status);
 			}
 			else{
-				marquee.setText("No server connection!");
+				connection_status = "No connection to server!";
+				//Log.i("connection status from on post execute", connection_status);
 			}
 		}
 	}
