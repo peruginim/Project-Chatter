@@ -27,7 +27,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 	static ConnectToServer io;
-	private static String client_identifier = "";
 	static TextView status;
 	static String connection_status = "Connect to a Server under Settings...";
 	static TextView speech_results;
@@ -101,9 +100,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			//sayString(temp);
 			
 		}
-		
-		
-
+	
 		// Log.i("DEBUG", "io.isAlive(): "+io.isAlive());
 
 		//** TTS 
@@ -112,13 +109,17 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 	}
 	
+	
+	/*
 	@Override
 	public void onResume(){
 		String temp="";
 		while (io.isconnected && (temp=io.getResult()).equals(""));
 		speech_results.append(temp);
 	}
-
+	 */	
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -126,28 +127,27 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		return true;
 	}
 
+	
 	@Override
 	public void onClick(View v) {
-
-		// determine which button is pressed
 		switch (v.getId()) {
-
-		// if record button pressed, add functionality...
-		case R.id.button_record:
-			// Start voice recording
-			// io.sendData("You hit the record button");
-			startVoiceRecognitionActivity();
-			break;
-
-		// if settings button pressed, open settings screen
-		case R.id.button_settings:
-			io.sendData("You hit the settings button");
-			Intent i2 = new Intent(this, Settings.class);
-			startActivity(i2);
-			break;
-		}
+			// if record button pressed, add functionality...
+			case R.id.button_record:
+				// Start voice recording
+				// io.sendData("You hit the record button");
+				startVoiceRecognitionActivity();
+				break;
+	
+			// if settings button pressed, open settings screen
+			case R.id.button_settings:
+				io.sendData("You hit the settings button");
+				Intent i2 = new Intent(this, Settings.class);
+				startActivity(i2);
+				break;
+			}
 	}
 
+	
 	private void startVoiceRecognitionActivity() {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -157,6 +157,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 	}
 
+	
 	/**
 	 * Handle the results from the recognition activity.
 	 */
@@ -169,7 +170,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
 			// Set textfield to first result
-		
 			speech_results.setMovementMethod(new ScrollingMovementMethod());
 			speech_results.append("\n" + matches.get(0));
 			io.sendData(matches.get(0));
@@ -179,7 +179,6 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			speech_results.append("\nServer:"+temp);
 			
 			sayString(temp);
-
 		}
 		
 		//** TTS
@@ -198,27 +197,22 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+	
 
 	static String getKey() {
 		String key = "";
-		// File f = new File("key.txt");
-
-		if (client_identifier.equals("")) {
-			// Log.i("cliend id", "DOES NOT EXIST");
-			int random;
-			for (int i = 0; i < 124; i++) { // Generates random string
-				random = (int) (Math.random() * 126);
-				if (random < 33)
-					random = random + 33;
-				key = key + (char) (random);
-			}
-
-			// Log.i("the key", key);
-
+		// Log.i("client id", "DOES NOT EXIST");
+		int random;
+		for (int i = 0; i < 124; i++) { // Generates random string
+			random = (int) (Math.random() * 126);
+			if (random < 33)
+				random = random + 33;
+			key = key + (char) (random);
 		}
 		return key;
 	}
 
+	
 	public void sayString(String speak){
 		//String text = inputText.getText().toString();
         if (speak!=null && speak.length()>0) {
@@ -227,12 +221,13 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
         }		
 	}
 
+	
 	public void onInit(int status) {       
 	      if (status == TextToSpeech.SUCCESS) {
-	        Toast.makeText(MainActivity.this, "Text-To-Speech engine is initialized", Toast.LENGTH_LONG).show();
+	        Toast.makeText(MainActivity.this, "Text-To-Speech engine is initialized", Toast.LENGTH_SHORT).show();
 	      }
 	      else if (status == TextToSpeech.ERROR) {
-	        Toast.makeText(MainActivity.this, "Error occurred while initializing Text-To-Speech engine", Toast.LENGTH_LONG).show();
+	        Toast.makeText(MainActivity.this, "Error occurred while initializing Text-To-Speech engine", Toast.LENGTH_SHORT).show();
 	      }
 	}
 	
