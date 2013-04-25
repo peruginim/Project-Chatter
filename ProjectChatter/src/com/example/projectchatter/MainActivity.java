@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,20 +28,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity<MyTextToSpeech> extends Activity implements OnClickListener, OnInitListener {
 
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
-	//static ConnectToServer io;
 	static TextView marquee;
 	static String connection_status = "Connect to a server through Settings screen...";
 	static TextView speech_results;
 	
-	//** global variables for TTS
+	// global variables for text to speech
     private int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech tts;
+    
+    // ConnectToServer global variable
+    public ConnectToServer io;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 
 
         // create async ConnectToServer object
-        new ConnectToServer().execute();
+        //io = (ConnectToServer) new ConnectToServer().execute();
         
         
 	}
@@ -111,15 +115,19 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			// if record button pressed, add functionality...
 			case R.id.button_record:
 				// Start voice recording
-				// io.sendData("You hit the record button");
 				startVoiceRecognitionActivity();
 				break;
 	
 			// if settings button pressed, open settings screen
 			case R.id.button_settings:
-				//io.sendData("You hit the settings button");
-				Intent i2 = new Intent(this, Settings.class);
-				startActivity(i2);
+				try{
+					Log.i("clicked settings", "clicked settings");
+					Intent i2 = new Intent(this, Settings.class);
+					startActivity(i2);
+				}
+				catch ( ActivityNotFoundException e) {
+				    e.printStackTrace();
+				}
 				break;
 			}
 	}
@@ -215,7 +223,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	 *  
 	 *  
 	 */
-	private class ConnectToServer extends AsyncTask<String, Integer, String> {
+	public class ConnectToServer extends AsyncTask<String, Integer, String> {
 		Socket socket;
 		DataOutputStream DOS;
 		DataInputStream DIS;
@@ -229,15 +237,13 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-		    //displayProgressBar("Downloading...");
 		}
 		 
 		   
 		    
 		@Override
 		protected String doInBackground(String... params) {
-			Log.i("ASYNC HERE I COME", "I AM COMING");
-			
+			//Log.i("ASYNC HERE I COME", "I AM COMING");
 			try {
 				socket = new Socket(SERVER, PORT);
 				socket.setKeepAlive(true);
@@ -253,7 +259,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 				e.printStackTrace();
 			}
 			
-			Log.i("conneted to: ", "server "+SERVER+" on port "+PORT);
+			//Log.i("conneted to: ", "server "+SERVER+" on port "+PORT);
 			
 			return "All Done!";
 		}
@@ -275,6 +281,86 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 			}
 		}
 	}
+	
+	
+	
+	
+	/*
+	 * 
+	 * Settings class to show settings screen
+	 *  
+	 *  
+	 */
+	public class Settings extends Activity implements OnClickListener {
+
+		int content = R.layout.settings;
+		String serv;
+		int p;
+		String clientid;
+
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			
+			// show the 'Settings' screen
+			setContentView(content);
+			
+			// set up click listener for the save button
+			View save = findViewById(R.id.button_connect);
+			save.setOnClickListener(this);
+			
+			View back = findViewById(R.id.button_back);
+			back.setOnClickListener(this);
+			
+			// save persistent application data in SharedPreferences structure
+			SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+
+			// create edit-able text fields
+			EditText directory = (EditText) findViewById(R.id.editDirectory);
+			EditText port = (EditText) findViewById(R.id.editPort);
+			
+			// set text of the text fields
+			directory.setText(pref.getString("Directory", "sslab10.cs.purdue.edu"));
+			port.setText(pref.getString("Port", "5555"));
+		}
+		
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.button_connect:
+					// create edit-able text fields
+					EditText directory = (EditText) findViewById(R.id.editDirectory);
+					EditText port = (EditText) findViewById(R.id.editPort);
+				
+					// save the strings from the text fields
+					SharedPreferences pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
+					if(directory.getText().toString().length() != 0) pref.edit().putString("Directory", directory.getText().toString()).commit();
+					if(port.getText().toString().length() != 0) pref.edit().putString("Port", port.getText().toString()).commit();
+				
+					// connect to server
+					String serv=directory.getText().toString();
+					int p=Integer.parseInt(port.getText().toString());
+					String clientid=pref.getString("client_id", "clientid");
+					
+					Log.i("strings from settings", "SERVER: "+serv+" || PORT: "+p+" || KEY: "+clientid);
+					
+					//io = (ConnectToServer) new ConnectToServer().execute();
+
+			        finish();
+					break;
+					
+				case R.id.button_back:
+					// send user back to home screen, don't save input
+					finish();
+					break;
+				}
+		}	
+
+	}
+	
+	
+	
+	
 	
 
 	
