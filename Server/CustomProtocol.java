@@ -4,18 +4,25 @@ import java.util.Scanner;
 
 
 public class CustomProtocol{
-	String usage = "\n\t\tChatter Server Help Menu\nAccepted Inputs:\n\texit or quit\tThis will disconnect you from the server.\n\thelp\tBrings up the help menu.\n\tconnection\tReturns the address that you are connected to.";
-	
+
+	String usage = 	"\n\t\tChatter Server Help Menu\n"
+			"Accepted Inputs:\n"
+			"\texit or quit\tThis will disconnect you from the server.\n"
+			"\thelp\tBrings up the help menu.\n"
+			"\tconnection\tReturns the address that you are connected to.";
+
 	static ChatterServerMain server = new ChatterServerMain();
+	static TwoWaySerialComm tw = new TwoWaySerialComm();
+	static boolean light = false;
 	/*
-	processInput(String input):
-		Takes input from the app and will send an appropriate response and/or complete an appropriate 
-		action.
-		Add your own ifs for cool things! Use the current examples to make your own! Regex is useful!
-		http://lmgtfy.com/?q=java+regex
-	*/	
+	   processInput(String input):
+	   Takes input from the app and will send an appropriate response and/or complete an appropriate 
+	   action.
+	   Add your own ifs for cool things! Use the current examples to make your own! Regex is useful!
+	   http://lmgtfy.com/?q=java+regex
+	 */	
 	public String processInput(String input){
-		
+
 		if(input==null){
 			return "Hello, you are chattin with chatter!";
 		}
@@ -44,36 +51,45 @@ public class CustomProtocol{
 		 *
 		 */
 		if(input.matches("[^\t\n]*(light)[^\n\t]*")) {
-			System.out.println("Something about lights?");
 			//The user refrenced lights
 
 			if(input.matches("[^\n\t]*(are)|(is)[^\n\t]*")) {
 				//Are the lights on or off?
-				System.out.println("Asking about?");
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
-					return "I'm not sure really...";
-						
+					if(light) return "Yes the light is on.\n";
+					else return "No the light is off.\n";
+
 				}else if (input.matches("[^\t\n]*(off)[^\n\t]*")) {
-					return "Can't say.";
+					if(!light) return "Yes the light is on.\n";
+					else return "No the light is off.\n";
 				}
-				
+
 			}else if (input.matches("[^\t\n]*(turn)[^\n\t]*")) {
 				//turn the lights on
-				System.out.println("changing the lights about?");
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
-					return "I'm turning the lights ON!";	
-				}else if (input.matches("[^\t\n]*(of)[^\n\t]*")) {
-					return "I'm turning the lights OFF!";
+					try {
+						tw.connect("/dev/tty.usbmodemfa131", "1");
+						light = true;
+					}catch (Exception e) {
+						System.err.println("Serial Connection error\n");
+						return "I can't find the light.\n";
+					}
+					return "The lights are now on.\n"; 
+				}else if (input.matches("[^\t\n]*(off)[^\n\t]*")) {
+					try {
+						tw.connect("/dev/tty.usbmodemfa131", "2");
+						light = false;
+					}catch (Exception e) {
+						System.err.println("Serial Connection error\n");
+						return "I can't find the light.\n";
+					}
+					return "The lights are now off.\n";
 				}
-				
-			}else {
-				//you mentioned the lights but waht about them?
-			}
-			
+
 		}
 
 		if(input.equals("exit") || input.equals("quit") || input.equals(":q")){
-			return("Goodbye.");
+			return("Goodbye.\n");
 		}
 		if(input.equals("help")) {
 			return usage;
@@ -81,7 +97,7 @@ public class CustomProtocol{
 		if(input.equals("connection")) {
 			return server.theToString();
 		}
-		return "Did not understand the command.";
+		return "Did not understand the command.\n";
 
 	}
 	public static void main(String args[]) {
