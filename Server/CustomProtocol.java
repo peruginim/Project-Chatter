@@ -67,23 +67,27 @@ public class CustomProtocol{
 			}else if (input.matches("[^\t\n]*(turn)[^\n\t]*")) {
 				//turn the lights on
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
-					try {
-						//tw.connect("/dev/tty.usbmodemfa131", "1");
-						light = true;
-					}catch (Exception e) {
-						System.err.println("Serial Connection error\n");
-						return "I can't find the light.\n";
-					}
-					return "The lights are now on.\n"; 
+					if(!light) {
+						try {
+							//tw.connect("/dev/tty.usbmodemfa131", "1");
+							light = true;
+						}catch (Exception e) {
+							System.err.println("Serial Connection error\n");
+							return "I can't find the light.\n";
+						}
+						return "The lights are now on.\n";
+					}else return "The light is already on.\n";
 				}else if (input.matches("[^\t\n]*(off)[^\n\t]*")) {
-					try {
-						//tw.connect("/dev/tty.usbmodemfa131", "2");
-						light = false;
-					}catch (Exception e) {
-						System.err.println("Serial Connection error\n");
-						return "I can't find the light.\n";
-					}
-					return "The lights are now off.\n";
+					if(light) {
+						try {
+							//tw.connect("/dev/tty.usbmodemfa131", "2");
+							light = false;
+						}catch (Exception e) {
+							System.err.println("Serial Connection error\n");
+							return "I can't find the light.\n";
+						}
+						return "The lights are now off.\n";
+					}else return "The light is already off.\n";
 				}
 			}
 
