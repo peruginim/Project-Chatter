@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +41,13 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	static String connection_status = "Connect to a server through Settings screen...";
 	static TextView speech_results;
 	boolean onResumeCalled = false;
+	static int i =0;
 	
 	// global variables for text to speech
     private int MY_DATA_CHECK_CODE = 0;
     private TextToSpeech tts;
     static String latest_command;
+    static String server_response;
     
     // ConnectToServer global variable
     public static ConnectToServer io;
@@ -105,9 +108,10 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		super.onResume();
 		
 		marquee.setText(connection_status);
-		//String temp="";
-		//while (io.isconnected && (temp=io.getResult()).equals(""));
-		//speech_results.append(temp);
+
+		//speech_results.append("\nappending...["+i+"]");
+		//i++;
+		
 		onResumeCalled = true;
 	}
 	
@@ -137,7 +141,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 					Intent i2 = new Intent(this, Settings.class);
 					startActivity(i2);
 				}
-				catch ( ActivityNotFoundException e) {
+				catch (ActivityNotFoundException e) {
 				    e.printStackTrace();
 				}
 				break;
@@ -241,11 +245,11 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 	 *  
 	 */
 	public static class ConnectToServer extends AsyncTask<String, Integer, String> {
-		DataOutputStream DOS;
-		DataInputStream DIS;
-		boolean isConnected = false;
-		String outData, inData;
-		Socket socket;
+		static DataOutputStream DOS;
+		static DataInputStream DIS;
+		static boolean isConnected = false;
+		static String outData, inData;
+		static Socket socket;
 
 		@Override
 		protected void onPreExecute() {
@@ -256,45 +260,127 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		@Override
 		protected String doInBackground(String... params) {
 			//Log.i("ASYNC HERE I COME", "I AM ASYNC");
+			
+			boolean newserver;
+			String toSend;
+			if(params[0].equals("t")){
+				newserver=true;
+			}else{
+				newserver=false;
+			}
+			
+			toSend=params[1];
+			
+			Log.i("Params", params[0]+" , "+params[1]);
+			
 			try {
-				// create socket and 
-				socket = new Socket(server_string, port_number);
-				socket.setKeepAlive(true);
-				DOS = new DataOutputStream(socket.getOutputStream());
-				DIS = new DataInputStream(socket.getInputStream());
-
-				isConnected = socket.isConnected();
-				if (isConnected) connection_status = ">>>Chatting with server "+server_string+" on port "+port_number;
-				else connection_status = ">>>No server connection!";
-				//Log.i("connection status from do in background", connection_status);
-				//Log.i("isConnected:", "equals "+isConnected);
-				
-				DOS.writeBytes(client_identification+"\n");
-				
-				while(isConnected){
-						Thread.sleep(4000);
-						
-						DOS.writeBytes(latest_command+"\n");
-						latest_command="";
-						
-						
+				// APP THINKS ITS NOT CONNECTED, SO CONNECT!
+				if (newserver){ //Want to connect to a new server
+					isConnected = false;
+					// create sockets
+					Log.i("creating sockets", "creatings scokets");
+					socket = new Socket(server_string, port_number);
+					socket.setKeepAlive(true);
+					socket.setSoTimeout(10000);
+					DOS = new DataOutputStream(socket.getOutputStream());
+					DIS = new DataInputStream(socket.getInputStream());
+					StringBuilder build = new StringBuilder();
+					Log.i("trying to connect to: ", server_string + "  "+ port_number);
 					
+					// send client id
+					DOS.writeBytes(client_identification+"\n");
+					// read in server response
+					int c;
+					try{
+						while((c=DIS.read())!=0){
+							if (c==-1){
+								//socket closed, now break
+								Log.i("read EOF", "read eof");
+								connection_status = "Connection refused!";
+								return "";
+							}
+							build.append((char)c);						
+						}
+						server_response = build.toString();
+						Log.i("SERVER_RESPONSE", server_response);
+						connection_status = "Chatting with server "+server_string+" on port "+port_number;
+						isConnected = true;
+						return server_response;
+					}catch (SocketTimeoutException e){
+						Log.i("socket time out", "socket time out exception");
+						connection_status = "Connection timed out!";
+						e.printStackTrace();
+					}
 				}
 				
-				isConnected = false;
-				
+				// SERVER THINKS IT IS CONNECTED, SEND DATA
+				else{ //!NEWSERVER
+					
+					
+					if (isConnected){
+						
+						
+						
+					}
+					
+					
+					// NOT CONNECTED
+					else{
+						try {
+							// APP THINKS ITS NOT CONNECT, SO CONNECT!
+							if (newserver){ //Want to connect to a new server
+								isConnected = false;
+								// create sockets
+								Log.i("creating sockets", "creatings scokets");
+								socket = new Socket(server_string, port_number);
+								socket.setKeepAlive(true);
+								socket.setSoTimeout(10000);
+								DOS = new DataOutputStream(socket.getOutputStream());
+								DIS = new DataInputStream(socket.getInputStream());
+								StringBuilder build = new StringBuilder();
+								Log.i("trying to connect to: ", server_string + "  "+ port_number);
+								
+								// send client id
+								DOS.writeBytes(client_identification+"\n");
+								// read in server response
+								int c;
+								try{
+									while((c=DIS.read())!=0){
+										if (c==-1){
+											//socket closed, now break
+											Log.i("read EOF", "read eof");
+											connection_status = "Connection refused!";
+											return "";
+										}
+										build.append((char)c);						
+									}
+									server_response = build.toString();
+									Log.i("SERVER_RESPONSE", server_response);
+									connection_status = "Chatting with server "+server_string+" on port "+port_number;
+									isConnected = true;
+								}catch (SocketTimeoutException e){
+									Log.i("socket time out", "socket time out exception");
+									connection_status = "Connection timed out!";
+									e.printStackTrace();
+								}
+							
+							}
+						}
+
+					}
+				}
+			
+
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
-				Log.i("unknownhostexception","unknownhostexception");
+				//Log.i("unknownhostexception","unknownhostexception");
 				isConnected = false;
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				Log.i("ioexecption","ioexecption");
+				//Log.i("ioexecption","ioexecption");
 				isConnected = false;
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				connection_status = "Server not found!";
 				e.printStackTrace();
 			}
 	
@@ -312,14 +398,19 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
-			if (isConnected){
-				connection_status = "Chatting with server "+server_string+" on port "+port_number;;
+			
+			if (!result.equals("")){
+				speech_results.append("\n"+result);
+			}
+			/*if (isConnected){
+				connection_status = "Chatting with server "+server_string+" on port "+port_number;
 				//Log.i("connection status from on post execute", connection_status);
 			}
 			else{
 				connection_status = "No connection to server!";
 				//Log.i("connection status from on post execute", connection_status);
-			}
+			}*/
+			marquee.setText(connection_status);
 		}
 	}
 	
@@ -378,7 +469,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements OnClickLis
 						
 					//Log.i("strings from settings", "SERVER: "+server_string+" || PORT: "+port_number+" || KEY: "+client_identification);
 						
-					io = (ConnectToServer) new ConnectToServer().execute();
+					io = (ConnectToServer) new ConnectToServer().execute(new String[]{"t","this doesn't matter"});
 
 				    finish();
 					break;
