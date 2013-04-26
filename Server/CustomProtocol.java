@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 public class CustomProtocol{
 
-	String usage = 	"\n\t\tChatter Server Help Menu\n"
-			"Accepted Inputs:\n"
-			"\texit or quit\tThis will disconnect you from the server.\n"
-			"\thelp\tBrings up the help menu.\n"
+	String usage = 	"\n\t\tChatter Server Help Menu\n" +
+			"Accepted Inputs:\n" +
+			"\texit or quit\tThis will disconnect you from the server.\n" +
+			"\thelp\tBrings up the help menu.\n" +
 			"\tconnection\tReturns the address that you are connected to.";
 
 	static ChatterServerMain server = new ChatterServerMain();
-	static TwoWaySerialComm tw = new TwoWaySerialComm();
+	//static TwoWaySerialComm tw = new TwoWaySerialComm();
 	static boolean light = false;
 	/*
 	   processInput(String input):
@@ -28,11 +28,11 @@ public class CustomProtocol{
 		}
 
 		if(input.equals("hello")){
-			return "Hello there!";
+			return "[say]Hello there!";
 		}
 
 		if(input.equals("who are you")){
-			return "I am the chatter server. \n You can send me commands and I will respond.";
+			return "[say]I am the chatter server. \n You can send me commands and I will respond.";
 		}
 
 		if(input.matches("read number [\\d]+")){
@@ -68,7 +68,7 @@ public class CustomProtocol{
 				//turn the lights on
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
 					try {
-						tw.connect("/dev/tty.usbmodemfa131", "1");
+						//tw.connect("/dev/tty.usbmodemfa131", "1");
 						light = true;
 					}catch (Exception e) {
 						System.err.println("Serial Connection error\n");
@@ -77,7 +77,7 @@ public class CustomProtocol{
 					return "The lights are now on.\n"; 
 				}else if (input.matches("[^\t\n]*(off)[^\n\t]*")) {
 					try {
-						tw.connect("/dev/tty.usbmodemfa131", "2");
+					//	tw.connect("/dev/tty.usbmodemfa131", "2");
 						light = false;
 					}catch (Exception e) {
 						System.err.println("Serial Connection error\n");
@@ -85,6 +85,7 @@ public class CustomProtocol{
 					}
 					return "The lights are now off.\n";
 				}
+			}
 
 		}
 
@@ -100,6 +101,7 @@ public class CustomProtocol{
 		return "Did not understand the command.\n";
 
 	}
+
 	public static void main(String args[]) {
 		try {
 			int port = 4444;

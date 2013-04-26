@@ -8,7 +8,7 @@ JLIB = Chatter.jar
 
 CLASSES = \
 	CustomProtocol.java\
-	TwoWaySerialComm.java
+	#TwoWaySerialComm.java
 
 #Create .class files from .java files
 all: $(CLASSES)
@@ -18,6 +18,6 @@ keygen: ChatterRSA.class
 	java ChatterRSA
 
 run: CustomProtocol.class
-	java -cp .:$(JLIB):RXTXcomm.jar CustomProtocol
+	java CustomProtocol -cp .:$(JLIB):RXTXcomm.jar
 clean:
 	$(RM) *.class
