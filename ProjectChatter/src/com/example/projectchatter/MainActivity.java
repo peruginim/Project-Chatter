@@ -285,7 +285,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 						if (c == -1) {
 							// socket closed, now break
 							Log.i("read EOF", "read eof");
-							connection_status = "Connection to server closed.";
+							connection_status = "Connection to server closed. Connection to server closed. Connection to server closed.";
 							return "";
 						}
 						build.append((char) c);
@@ -300,7 +300,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 
 				} catch (SocketTimeoutException e) {
 					Log.i("socket time out", "socket time out exception");
-					connection_status = "Connection timed out!";
+					connection_status = "Connection timed out! Connection timed out! Connection timed out!";
 					isConnected = false;
 					e.printStackTrace();
 					return "";
@@ -310,14 +310,14 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 				// TODO Auto-generated catch block
 				// Log.i("unknownhostexception","unknownhostexception");
 				isConnected = false;
-				connection_status = "Server not found!";
+				connection_status = "Server not found! Server not found! Server not found!";
 				e.printStackTrace();
 				return "";
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				// Log.i("ioexecption","ioexecption");
 				isConnected = false;
-				connection_status = "Server not found!";
+				connection_status = "Server not found! Server not found! Server not found!";
 				e.printStackTrace();
 				return "";
 			}
@@ -339,7 +339,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 						if (c == -1) {
 							// socket closed, now break
 							Log.i("read EOF", "read eof");
-							connection_status = "Connection to server closed.";
+							connection_status = "Connection to server closed. Connection to server closed. Connection to server closed.";
 							return "";
 						}
 						build.append((char) c);
@@ -352,7 +352,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 
 				} catch (SocketTimeoutException e) {
 					Log.i("socket time out", "socket time out exception");
-					connection_status = "Connection timed out!";
+					connection_status = "Connection timed out! Connection timed out! Connection timed out!";
 					isConnected = false;
 					e.printStackTrace();
 					return "";
@@ -362,14 +362,14 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 				// TODO Auto-generated catch block
 				// Log.i("unknownhostexception","unknownhostexception");
 				isConnected = false;
-				connection_status = "Server not found!";
+				connection_status = "Server not found! Server not found! Server not found!";
 				e.printStackTrace();
 				return "";
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				// Log.i("ioexecption","ioexecption");
 				isConnected = false;
-				connection_status = "Server not found!";
+				connection_status = "Server not found! Server not found! Server not found!";
 				e.printStackTrace();
 				return "";
 			}
