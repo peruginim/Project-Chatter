@@ -69,34 +69,12 @@ public class Settings extends Activity implements OnClickListener {
 				MainActivity.io.close();
 				MainActivity.io=new ConnectToServer(serv, p, clientid);
 				MainActivity.io.start();
-				
-				/*if(io==null){
-		        	pref = getSharedPreferences("serverPrefs", Context.MODE_PRIVATE);
-		        	
-		            if(!pref.contains("client_id")){
-		            	pref.edit().putString("client_id", MainActivity.getKey()).commit();
-		            }
-		            
-		        	//Log.i("client id", pref.getString("client_id", "default"));
-		        	
-		        	serv=pref.getString("Directory", "sslab10.cs.purdue.edu");
-					p=Integer.parseInt(pref.getString("Port", "4444"));
-					clientid=pref.getString("client_id", "clientid");
-					
-		        	io=new ConnectToServer(serv, p, clientid);
-		        	io.start();
-		        	
-		        }*/
-				
-				//Intent i = 	new Intent(this, MainActivity.class);
-				//startActivity(i);
+
 		        finish();
 				break;
 				
 			case R.id.button_back:
 				// send user back to home screen, don't save input
-				//Intent j = new Intent(this, MainActivity.class);
-				//startActivity(j);
 				finish();
 				break;
 			}

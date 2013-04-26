@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
@@ -18,13 +19,21 @@ public class ConnectToServer extends Thread{
 	DataOutputStream DOS;
 	DataInputStream DIS;
 	String data="";
+	String outData="";
 	boolean running=true;
+	boolean isconnected=false;
 	String server;
 	int port;
 	String clientid;
 	
 	public void sendData(String string){
 		data=string;
+	}
+	public String getResult(){
+		String temp="";
+		temp=outData;
+		outData="";
+		return temp;
 	}
 	
 	public void close(){
@@ -46,6 +55,7 @@ public class ConnectToServer extends Thread{
         
         // create socket connection
 		try {
+			isconnected=true;
 			//Log.i("NEW CONNECT TO", "SERVER: "+server+" || PORT: "+port+" || KEY: "+clientid);
 			socket = new Socket(server, port);
 			socket.setKeepAlive(true);
@@ -53,23 +63,37 @@ public class ConnectToServer extends Thread{
 			DOS = new DataOutputStream(socket.getOutputStream());
 			DIS = new DataInputStream(socket.getInputStream());
 			
+			
+			
 			MainActivity.connection_status="Now connected to: "+server+"  on port: "+port;
 			
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			isconnected=false;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			isconnected=false;
+		} catch (Exception e){
+			isconnected=false;
 		}
 		
 		if (socket != null && DOS != null){
 			StringBuilder build=new StringBuilder();
 			int c;
 			try {
-				socket.setSoTimeout(7000);
+				socket.setSoTimeout(1000);
 				DOS.writeBytes(clientid+"\n");
+				
+				//Thread.sleep(5000);
+				
+				while((c=DIS.read())!=0){
+					build.append((char)c);
+				}
+				outData=build.toString();
 				
 				while(running){
 					if(!data.equals("")){
@@ -81,13 +105,23 @@ public class ConnectToServer extends Thread{
 						build.trimToSize();
 						build.ensureCapacity(20);
 						
+						try{
 						while((c=DIS.read())!=0){
+							if(c==-1){
+								outData="Disconnected from server";
+								isconnected=false;
+								break;
+							}
 							build.append((char)c);
 						}
+						}catch(SocketTimeoutException e){
+							outData="nope";
+						}
 						
-						Log.i("READIN","THE STRING READ IN IS: "+build.toString());
+						outData=build.toString();
+						Log.i("READIN","THE STRING READ IN IS: "+outData);
 						
-						MainActivity.speech_results.append(build.toString()+"\n");
+						
 					}
 				}
 				
@@ -95,6 +129,7 @@ public class ConnectToServer extends Thread{
 				socket.close();
 				MainActivity.connection_status="No server connection!";
 			} catch (Exception e){
+				Log.i("POOPHERE","NOPOOP");
 				e.printStackTrace();
 			}/*catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
