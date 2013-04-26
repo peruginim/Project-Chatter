@@ -1,0 +1,29 @@
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+public class SerialIO {
+ OutputStream out;
+
+ public SerialIO(OutputStream out){
+  this.out = out;
+ }
+ 
+ public void out(int [] output) {
+  try {
+    int i = 0;
+    while(i < output.length){
+       this.out.write(output[i]);
+       i++;
+    }
+  } catch (Exception e) {
+     e.printStackTrace();
+  }
+
+ }
+}
