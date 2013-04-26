@@ -4,7 +4,7 @@
 #Java Compliler and Flags
 JFLAGS = -g
 JC = javac
-JLIB = Chatter.jar 
+JLIB = Chatter.jar
 
 CLASSES = \
 	CustomProtocol.java\
@@ -12,7 +12,7 @@ CLASSES = \
 
 #Create .class files from .java files
 all: $(CLASSES)
-	$(JC) $(JFLAGS) *.java -cp $(JLIB)
+	$(JC) $(JFLAGS) *.java -cp .:$(JLIB):RXTXcomm.jar
 
 keygen: ChatterRSA.class
 	java ChatterRSA

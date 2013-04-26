@@ -77,7 +77,7 @@ public class CustomProtocol{
 					return "The lights are now on.\n"; 
 				}else if (input.matches("[^\t\n]*(off)[^\n\t]*")) {
 					try {
-					//	tw.connect("/dev/tty.usbmodemfa131", "2");
+						//tw.connect("/dev/tty.usbmodemfa131", "2");
 						light = false;
 					}catch (Exception e) {
 						System.err.println("Serial Connection error\n");
