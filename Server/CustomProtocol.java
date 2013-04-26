@@ -53,7 +53,7 @@ public class CustomProtocol{
 		if(input.matches("[^\t\n]*(light)[^\n\t]*")) {
 			//The user refrenced lights
 
-			if(input.matches("[^\n\t]*(are)|(is)[^\n\t]*")) {
+			if(input.matches("[^\n\t]*(are)[^\n\t]*")) {
 				//Are the lights on or off?
 				if(input.matches("[^\n\t]*(on)[^\n\t]*")) {
 					if(light) return "Yes the light is on.\n";
