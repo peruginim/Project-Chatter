@@ -1,5 +1,3 @@
-HOIHJOSAIJDFOAISJDFOISH
-I DONT KNOW WHAT I'M DOING
 <br/><br/> 
 
 To change git commit editer program<br/>
