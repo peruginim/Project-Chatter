@@ -45,6 +45,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 	static int i = 0;
 
 	// global variables for text to speech
+	// This is a test line. Purpose: to check which repository I'm pushing to (personal or ajay's)
 	private int MY_DATA_CHECK_CODE = 0;
 	private static TextToSpeech tts;
 	static String latest_command;
@@ -193,8 +194,7 @@ public class MainActivity<MyTextToSpeech> extends Activity implements
 			} else {
 				// missing data, install it
 				Intent installIntent = new Intent();
-				installIntent
-						.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
 				startActivity(installIntent);
 			}
 		}
