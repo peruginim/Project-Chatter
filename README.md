@@ -1,3 +1,9 @@
+Android app for home automation via voice commands.
+Client-Server Architecture with the server communicating with microcontrollers that interfaced with household appliances.
+
+
+
+
 <br/><br/> 
 
 To change git commit editer program<br/>
