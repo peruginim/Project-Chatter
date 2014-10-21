@@ -1,5 +1,5 @@
 Android app for home automation via voice commands.
-Client-Server Architecture with the server communicating with microcontrollers that interfaced with household appliances.
+Client-Server Architecture with the server communicating with microcontrollers that interface with household appliances.
 
 
 
